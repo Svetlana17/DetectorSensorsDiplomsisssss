@@ -39,15 +39,19 @@ public class SensorPlotterPrint {
     private String state;
     private Map<String,Double> incValue;
     private AccelerGyrosActivity activity;
+   // private MainActivity activityMain;
 
     public SensorPlotterPrint(@NonNull String name, @NonNull  GraphView graphView,
                               @NonNull Observable<SensorEvent> sensorEventObservable, String state, Map<String,Double> incValue,
-                              AccelerGyrosActivity view) {
+                              AccelerGyrosActivity view
+                              //,MainActivity views
+                              ) {
         this.incValue = incValue;
         this.state = state;
         mName = name;
         mSensorEventObservable = sensorEventObservable;
         this.activity = view;
+       // this.activityMain=views;
 
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(0);
@@ -100,16 +104,19 @@ public class SensorPlotterPrint {
                 appendData(mSeriesXs, event.values[0]);
                 appendData(mSeriesXf, event.values[0] + incValue.get("X"));
                 activity.printValueInText(event);
+               // activityMain.printValueInText(event);
                 break;
             case "Y":
                 appendData(mSeriesYs, event.values[1]);
                 appendData(mSeriesYf, event.values[1] + incValue.get("Y"));
                 activity.printValueInText(event);
+                // activityMain.printValueInText(event);
                 break;
             case "Z":
                 appendData(mSeriesZs, event.values[2]);
                 appendData(mSeriesZf, event.values[2] + incValue.get("Z"));
                 activity.printValueInText(event);
+                // activityMain.printValueInText(event);
                 break;
             case "DEFAULT":
                 appendData(mSeriesXs, event.values[0]);
@@ -119,6 +126,7 @@ public class SensorPlotterPrint {
                 appendData(mSeriesZs, event.values[2]);
                 appendData(mSeriesZf, event.values[2] + incValue.get("Z"));
                 activity.printValueInText(event);
+                // activityMain.printValueInText(event);
                 break;
         }
     }

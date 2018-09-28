@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
+import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
@@ -17,6 +18,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.SeekBar;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.jjoe64.graphview.GraphView;
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button button;
     SensorPlotter sensorPlotter;
     private int VIEWPORT_SECONDS;
-
+   // TextView linX; TextView linY; TextView linZ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -266,4 +268,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             activity.startActivity(activity.getIntent());
         }
     }
+//    public void printValueInText(SensorEvent event) {
+//        int type = event.sensor.getType();
+//        switch (type) {
+//            case Sensor.TYPE_ACCELEROMETER:
+//                linX.setText("X: " + String.format("%.2f", event.values[0]));
+//                linY.setText("Y: " + String.format("%.2f", event.values[1]));
+//                linZ.setText("Z: " + String.format("%.2f", event.values[2]));
+//                break;
+//}
 }
