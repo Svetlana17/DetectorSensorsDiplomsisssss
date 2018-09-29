@@ -1,11 +1,14 @@
 package com.arkadygamza.shakedetector;
 
 import android.graphics.Color;
+import android.graphics.DashPathEffect;
+import android.graphics.Paint;
 import android.hardware.SensorEvent;
 import android.support.annotation.NonNull;
 import android.widget.SeekBar;
 
 import com.jjoe64.graphview.GraphView;
+import com.jjoe64.graphview.LegendRenderer;
 import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
@@ -47,16 +50,17 @@ public class SensorPlotter {
         mSensorEventObservable = sensorEventObservable;
 
         graphView.getViewport().setXAxisBoundsManual(true);
-        graphView.getViewport().setMinX(-20);// ТУТ ПОМЕНЯЛА
+        graphView.getViewport().setMinX(-20);
         graphView.getViewport().setMaxX(VIEWPORT_SECONDS * 1000); // number of ms in viewport
 
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setMinY(-20);
         graphView.getViewport().setMaxY(20);
 
-        graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
-        graphView.getGridLabelRenderer().setVerticalLabelsVisible(false);
-
+       // graphView.getGridLabelRenderer().setHorizontalLabelsVisible(true);
+      //  graphView.getGridLabelRenderer().setVerticalLabelsVisible(false);
+        graphView.getLegendRenderer().setVisible(true);
+        graphView.getLegendRenderer().setAlign(LegendRenderer.LegendAlign.TOP);
         mSeriesXs = new LineGraphSeries<>();
         mSeriesXf = new LineGraphSeries<>();
         mSeriesYs = new LineGraphSeries<>();
@@ -64,12 +68,59 @@ public class SensorPlotter {
         mSeriesZs = new LineGraphSeries<>();
         mSeriesZf = new LineGraphSeries<>();
 
-        mSeriesXs.setColor(Color.RED);
+        mSeriesXs.setColor(Color.BLACK);
+        mSeriesXs.setTitle("X");
+        Paint paint = new Paint();
+        paint.setStyle(Paint.Style.STROKE);
+        paint.setStrokeWidth(10);
+        paint.setPathEffect(new DashPathEffect(new float[]{8, 5}, 0));
+        mSeriesXs.setCustomPaint(paint);
+
         mSeriesXf.setColor(Color.YELLOW);
+        mSeriesXf.setTitle("XF");
+        Paint paints = new Paint();
+        paints.setStyle(Paint.Style.STROKE);
+        paints.setStrokeWidth(10);
+        paint.setPathEffect(new DashPathEffect(new float[]{8, 5}, 0));
+        mSeriesXf.setCustomPaint(paints);
+
+
+
+
         mSeriesYs.setColor(Color.GREEN);
+        mSeriesYs.setTitle("Y");
+//        Paint paintss = new Paint();
+//        paintss.setStyle(Paint.Style.STROKE);
+//        paintss.setStrokeWidth(10);
+//        paint.setPathEffect(new DashPathEffect(new float[]{8, 5}, 0));
+//        mSeriesXf.setCustomPaint(paintss);
+//
+
+
         mSeriesYf.setColor(Color.GRAY);
+        mSeriesYf.setTitle("YF");
+   //     Paint paintss = new Paint();
+//        paintsss.setStyle(Paint.Style.STROKE);
+//        paintsss.setStrokeWidth(10);
+//        paint.setPathEffect(new DashPathEffect(new float[]{8, 5}, 0));
+//        mSeriesYf.setCustomPaint(paintsss);
+//
         mSeriesZs.setColor(Color.BLUE);
+        mSeriesZs.setTitle("Z");
+        //  Paint paintsss = new Paint();
+//        paintsss.setStyle(Paint.Style.STROKE);
+//        paintsss.setStrokeWidth(10);
+//        paint.setPathEffect(new DashPathEffect(new float[]{8, 5}, 0));
+//        mSeriesZs.setCustomPaint(paintsss);
+//
+
         mSeriesZf.setColor(Color.CYAN);
+        mSeriesZf.setTitle("ZF");
+        Paint paintd = new Paint();
+//        paintd.setStyle(Paint.Style.STROKE);
+//        paintd.setStrokeWidth(10);
+//        paint.setPathEffect(new DashPathEffect(new float[]{8, 5}, 0));
+//        mSeriesZf.setCustomPaint(paintd);
 
         graphView.addSeries(mSeriesXs);
         graphView.addSeries(mSeriesXf);
@@ -94,8 +145,8 @@ public class SensorPlotter {
         graphView.getViewport().setMinY(-20);
         graphView.getViewport().setMaxY(20);
 
-        graphView.getGridLabelRenderer().setHorizontalLabelsVisible(false);
-        graphView.getGridLabelRenderer().setVerticalLabelsVisible(false);
+        graphView.getGridLabelRenderer().setHorizontalLabelsVisible(true);
+        graphView.getGridLabelRenderer().setVerticalLabelsVisible(true);
 
         mSeriesXs = new LineGraphSeries<>();
         mSeriesXf = new LineGraphSeries<>();
@@ -105,7 +156,11 @@ public class SensorPlotter {
         mSeriesZf = new LineGraphSeries<>();
 
         mSeriesXs.setColor(Color.RED);
+        mSeriesXs.setTitle("X");
+        mSeriesXs.getDataPointsRadius();
+        mSeriesXs.setDataPointsRadius(20);
         mSeriesXf.setColor(Color.YELLOW);
+        mSeriesXf.setTitle("Ygggggggggggggggggggggggggggggggggggggggggggggggggggg");
         mSeriesYs.setColor(Color.GREEN);
         mSeriesYf.setColor(Color.GRAY);
         mSeriesZs.setColor(Color.BLUE);

@@ -216,7 +216,7 @@ EditText shagValue;
 
     private void setupPlotters() {
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-        List<Sensor> linearAccSensors = sensorManager.getSensorList(Sensor.TYPE_GYROSCOPE);///////>????????
+        List<Sensor> linearAccSensors = sensorManager.getSensorList(Sensor.TYPE_GYROSCOPE);
       //  mPlotters.add(new SensorPlotter("GYR", (GraphView) findViewById(R.id.graph_gyroscope), SensorEventObservableFactory.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue));
   /*?????????????????????????*/
         sensorPlotter=(new SensorPlotter("LIN", (GraphView) findViewById(R.id.graph_gyroscope), SensorEventObservableFactory.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue, VIEWPORT_SECONDS));
