@@ -147,23 +147,72 @@ public class SensorPlotterPrint {
             return;
         }
         switch (state) {
+          //  case "X":
+//                appendData(mSeriesXs, event.values[0]);
+//                appendData(mSeriesXf, incValue.get("X")+(1-incValue.get("X"))*event.values[0]);
+//
+//                //  appendData(mSeriesXf, event.values[0] + incValue.get("X"));
+//                activity.printValueInText(event);
+//               // activityMain.printValueInText(event);
+//                break;
+//            case "Y":
+//                appendData(mSeriesYs, event.values[1]);
+//                appendData(mSeriesYf, event.values[1] + incValue.get("Y"));
+//                activity.printValueInText(event);
+//                // activityMain.printValueInText(event);
+//                break;
+//            case "Z":
+//                appendData(mSeriesZs, event.values[2]);
+//                appendData(mSeriesZf, event.values[2] + incValue.get("Z"));
+//                activity.printValueInText(event);
+//                // activityMain.printValueInText(event);
+//                break;
+//            case "DEFAULT":
+//                appendData(mSeriesXs, event.values[0]);
+//                appendData(mSeriesXf, event.values[0] + incValue.get("X"));
+//                appendData(mSeriesYs, event.values[1]);
+//                appendData(mSeriesYf, event.values[1] + incValue.get("Y"));
+//                appendData(mSeriesZs, event.values[2]);
+//                appendData(mSeriesZf, event.values[2] + incValue.get("Z"));
+//                activity.printValueInText(event);
+//                // activityMain.printValueInText(event);
+//                break;
             case "X":
                 appendData(mSeriesXs, event.values[0]);
-                appendData(mSeriesXf, event.values[0] + incValue.get("X"));
-                activity.printValueInText(event);
-               // activityMain.printValueInText(event);
+                // appendData(mSeriesXf, average(incValue.get("X")));
+
+                appendData(mSeriesXf, incValue.get("X")+(1-incValue.get("X"))*event.values[0]);
+
+                // appendData(mSeriesXf, incValue.get("X")+incValue.get("Y"));
+                break;
+            case "XG":
+                appendData(mSeriesXs, event.values[0]);
+                //  appendData(mSeriesXf, average(incValue.get("X")));
+                appendData(mSeriesXf, 1-incValue.get("X")*event.values[0]);
                 break;
             case "Y":
                 appendData(mSeriesYs, event.values[1]);
-                appendData(mSeriesYf, event.values[1] + incValue.get("Y"));
-                activity.printValueInText(event);
-                // activityMain.printValueInText(event);
+                // appendData(mSeriesYf, event.values[1] + incValue.get("Y"));
+                //  appendData(mSeriesXf, incValue.get("X")+(1-incValue.get("X"))*event.values[0]);
+                appendData(mSeriesYf, incValue.get("Y")+(1-incValue.get("Y"))*event.values[1]);
+                break;
+            case "YG":
+                appendData(mSeriesYs, event.values[1]);
+                //appendData(mSeriesXf, average(incValue.get("X")));
+                appendData(mSeriesYf, 1-incValue.get("X")*event.values[1]);
+
                 break;
             case "Z":
                 appendData(mSeriesZs, event.values[2]);
-                appendData(mSeriesZf, event.values[2] + incValue.get("Z"));
-                activity.printValueInText(event);
-                // activityMain.printValueInText(event);
+                // appendData(mSeriesZf, event.values[2] + incValue.get("Z"));
+                appendData(mSeriesZf, incValue.get("Z")+(1-incValue.get("Z"))*event.values[2]);
+
+                break;
+            case "ZG":
+                appendData(mSeriesZs, event.values[0]);
+                //  appendData(mSeriesXf, average(incValue.get("X")));
+                appendData(mSeriesZf, 1-incValue.get("Z")*event.values[2]);
+
                 break;
             case "DEFAULT":
                 appendData(mSeriesXs, event.values[0]);
@@ -172,8 +221,14 @@ public class SensorPlotterPrint {
                 appendData(mSeriesYf, event.values[1] + incValue.get("Y"));
                 appendData(mSeriesZs, event.values[2]);
                 appendData(mSeriesZf, event.values[2] + incValue.get("Z"));
-                activity.printValueInText(event);
-                // activityMain.printValueInText(event);
+                break;
+            case "DEFAULTG":
+                appendData(mSeriesXs, event.values[0]);
+                appendData(mSeriesXf, event.values[0] + incValue.get("X"));
+                appendData(mSeriesYs, event.values[1]);
+                appendData(mSeriesYf, event.values[1] + incValue.get("Y"));
+                appendData(mSeriesZs, event.values[2]);
+                appendData(mSeriesZf, event.values[2] + incValue.get("Z"));
                 break;
         }
     }
