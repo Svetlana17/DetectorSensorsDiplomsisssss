@@ -1,10 +1,12 @@
 package com.arkadygamza.shakedetector;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -47,11 +49,18 @@ public class AccelerGyrosActivity extends AppCompatActivity implements View.OnCl
     TextView gerX;
     TextView gerY;
     TextView gerZ;
+    private int VIEWPORT_SECONDS;
+    TextView textView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_acceler_gyros);
+        if (savedInstanceState == null) {
+            VIEWPORT_SECONDS = 5;
+        } else {
+            VIEWPORT_SECONDS = (int) savedInstanceState.getSerializable("VIEWPORT_SECONDS");
+        }
         increaseValue = new HashMap<>();
         increaseValue.put("X", 0.0);
         increaseValue.put("Y", 0.0);
@@ -62,13 +71,21 @@ public class AccelerGyrosActivity extends AppCompatActivity implements View.OnCl
                 ArrayAdapter.createFromResource(this, R.array.list, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-
+        textView= (TextView) findViewById(R.id.tv);
+       textView.setText(String.valueOf(VIEWPORT_SECONDS));
         SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar_both);
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                mPlotters.get(0).changeViewPort(i);
-                mPlotters.get(1).changeViewPort(i);
+              //  mPlotters.get(0).changeViewPort(i);
+             //   mPlotters.get(1).changeViewPort(i);
+                if(i>0){
+                    VIEWPORT_SECONDS=i;
+                    textView.setText(String.valueOf(i));
+                }else {
+                    VIEWPORT_SECONDS=1;
+                    textView.setText("1");
+                }
             }
 
             @Override
@@ -78,7 +95,7 @@ public class AccelerGyrosActivity extends AppCompatActivity implements View.OnCl
 
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-
+            restartActivity(AccelerGyrosActivity.this);
             }
         });
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -169,6 +186,13 @@ public class AccelerGyrosActivity extends AppCompatActivity implements View.OnCl
         });
     }
 
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+      if(VIEWPORT_SECONDS>0){
+          outState.putSerializable("VIEWPORT_SECONDS", VIEWPORT_SECONDS);
+      }
+    }
+
     public void updateIncValue(String line, String value) {
         increaseValue.put(line, Double.valueOf(value));
         changeIncValue(increaseValue);
@@ -219,8 +243,12 @@ public class AccelerGyrosActivity extends AppCompatActivity implements View.OnCl
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         List<Sensor> linearAccSensors = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER);
         List<Sensor> gyroscopeAccSensors = sensorManager.getSensorList(Sensor.TYPE_GYROSCOPE);
-        mPlotters.add(new SensorPlotterPrint("LIN", (GraphView) findViewById(R.id.graph_accelerometr_both), SensorEventObservableFactory.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue, this));
-        mPlotters.add(new SensorPlotterPrint("GER", (GraphView) findViewById(R.id.graph_gyroscope_both), SensorEventObservableFactory.createSensorEventObservable(gyroscopeAccSensors.get(0), sensorManager), state, increaseValue, this));
+        GraphView graphViewAcc=(GraphView) findViewById(R.id.graph_accelerometr_both);
+        graphViewAcc.setTitle("Акселерометр");
+        GraphView graphViewGir=(GraphView) findViewById(R.id.graph_gyroscope_both);
+        graphViewGir.setTitle("Гироскоп");
+        mPlotters.add(new SensorPlotterPrint("LIN", graphViewAcc, SensorEventObservableFactory.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue, this,VIEWPORT_SECONDS));
+        mPlotters.add(new SensorPlotterPrint("GER", graphViewGir, SensorEventObservableFactory.createSensorEventObservable(gyroscopeAccSensors.get(0), sensorManager), state, increaseValue, this, VIEWPORT_SECONDS));
     }
 
     @Override
@@ -265,7 +293,7 @@ public class AccelerGyrosActivity extends AppCompatActivity implements View.OnCl
     public void printValueInText(SensorEvent event) {
         int type = event.sensor.getType();
         switch (type) {
-            case Sensor.TYPE_LINEAR_ACCELERATION:
+            case Sensor.TYPE_ACCELEROMETER:
                 linX.setText("X: " + String.format("%.2f", event.values[0]));
                 linY.setText("Y: " + String.format("%.2f", event.values[1]));
                 linZ.setText("Z: " + String.format("%.2f", event.values[2]));
@@ -278,6 +306,13 @@ public class AccelerGyrosActivity extends AppCompatActivity implements View.OnCl
 
         }
     }
-
+    public void restartActivity(Activity activity) {
+        if (Build.VERSION.SDK_INT >= 11) {
+            activity.recreate();
+        } else {
+            activity.finish();
+            activity.startActivity(activity.getIntent());
+        }
+    }
 
 }

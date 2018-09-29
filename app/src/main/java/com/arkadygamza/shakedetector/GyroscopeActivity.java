@@ -39,7 +39,7 @@ public class GyroscopeActivity extends AppCompatActivity implements View.OnClick
 
     private Observable<?> mShakeObservable;
     private Subscription mShakeSubscription;
-    public String state = "DEFAULT";
+    public String state = "DEFAULTG";
     public Map<String, Double> increaseValue;
     EditText editValue;
 
@@ -88,26 +88,26 @@ EditText shagValue;
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                 switch (i) {
                     case 0:
-                        state = "DEFAULT";
+                        state = "DEFAULTG";
                         changeState(state);
                         break;
 
                     case 1:
-                        state = "X";
+                        state = "XG";
                         changeState(state);
                         break;
 
                     case 2:
-                        state = "Y";
+                        state = "YG";
                         changeState(state);
                         break;
 
                     case 3:
-                        state = "Z";
+                        state = "ZG";
                         changeState(state);
                         break;
                     default:
-                        state = "DEFAULT";
+                        state = "DEFAULTG";
                         changeState(state);
                         break;
                 }
