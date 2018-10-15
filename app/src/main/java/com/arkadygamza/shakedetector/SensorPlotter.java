@@ -41,7 +41,7 @@ public class SensorPlotter {
     private Subscription mSubscription;
     private String state;
     private Map<String,Double> incValue;
-
+    private float[] output;
     public SensorPlotter(@NonNull String name, @NonNull  GraphView graphView,
                          @NonNull Observable<SensorEvent> sensorEventObservable,String state,Map<String,Double> incValue) {
         this.incValue = incValue;
@@ -192,38 +192,40 @@ public class SensorPlotter {
         switch (state) {
             case "X":
                 appendData(mSeriesXs, event.values[0]);
-               // appendData(mSeriesXf, average(incValue.get("X")));
 
-                appendData(mSeriesXf, incValue.get("X")+(1-incValue.get("X"))*event.values[0]);
 
-               // appendData(mSeriesXf, incValue.get("X")+incValue.get("Y"));
+               appendData(mSeriesXf, incValue.get("X")+(1-incValue.get("X"))*event.values[0]);
+               //appendData(mSeriesXf,   incValue.get("X") * output[0] + (1 - incValue.get("X")) * event.values[0]);
+
+
+
+
                 break;
             case "XG":
                 appendData(mSeriesXs, event.values[0]);
-              //  appendData(mSeriesXf, average(incValue.get("X")));
+
                 appendData(mSeriesXf, 1-incValue.get("X")*event.values[0]);
                 break;
             case "Y":
                 appendData(mSeriesYs, event.values[1]);
-               // appendData(mSeriesYf, event.values[1] + incValue.get("Y"));
-              //  appendData(mSeriesXf, incValue.get("X")+(1-incValue.get("X"))*event.values[0]);
+
                 appendData(mSeriesYf, incValue.get("Y")+(1-incValue.get("Y"))*event.values[1]);
                 break;
             case "YG":
                 appendData(mSeriesYs, event.values[1]);
-                //appendData(mSeriesXf, average(incValue.get("X")));
+
                 appendData(mSeriesYf, 1-incValue.get("X")*event.values[1]);
 
                 break;
             case "Z":
                 appendData(mSeriesZs, event.values[2]);
-               // appendData(mSeriesZf, event.values[2] + incValue.get("Z"));
+
                 appendData(mSeriesZf, incValue.get("Z")+(1-incValue.get("Z"))*event.values[2]);
 
                 break;
             case "ZG":
                 appendData(mSeriesZs, event.values[0]);
-              //  appendData(mSeriesXf, average(incValue.get("X")));
+
                 appendData(mSeriesZf, 1-incValue.get("Z")*event.values[2]);
 
                 break;
@@ -251,15 +253,7 @@ public class SensorPlotter {
 //    }
     public double average(double valueX) {
         // valueX=alpha*valueX+(1-alpha)*incValue.get("X");
-       // valueX=alpha*g+(1-alpha)*incValue.get("X");
-//        if (oldValueX == null) {
-//            oldValueX = valueX;
-//            //  return value;
-//        }
-//        double newValueX=oldValueX+alpha*(valueX-oldValueX);
-//                //alpha*value+(1-alpha)*oldValue;
-//        oldValueX = newValueX;
-//        return newValueX;
+
         return valueX;
     }
     /*
