@@ -196,26 +196,18 @@ public class SensorPlotter {
 
                appendData(mSeriesXf, incValue.get("X")+(1-incValue.get("X"))*event.values[0]);
                //appendData(mSeriesXf,   incValue.get("X") * output[0] + (1 - incValue.get("X")) * event.values[0]);
-
-
-
-
                 break;
             case "XG":
                 appendData(mSeriesXs, event.values[0]);
-
                 appendData(mSeriesXf, 1-incValue.get("X")*event.values[0]);
                 break;
             case "Y":
                 appendData(mSeriesYs, event.values[1]);
-
                 appendData(mSeriesYf, incValue.get("Y")+(1-incValue.get("Y"))*event.values[1]);
                 break;
             case "YG":
                 appendData(mSeriesYs, event.values[1]);
-
                 appendData(mSeriesYf, 1-incValue.get("X")*event.values[1]);
-
                 break;
             case "Z":
                 appendData(mSeriesZs, event.values[2]);

@@ -34,8 +34,7 @@ import rx.functions.Action1;
 import rx.functions.Func2;
 
 public class AccelerGyrosActivity extends AppCompatActivity implements View.OnClickListener {
-
-
+    
     private final List<SensorPlotterPrint> mPlotters = new ArrayList<>(3);
 
     private Observable<?> mShakeObservable;
