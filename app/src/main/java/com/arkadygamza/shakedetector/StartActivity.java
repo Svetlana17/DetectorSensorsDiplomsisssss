@@ -17,7 +17,7 @@ public class StartActivity extends AppCompatActivity implements  View.OnClickLis
         button.setOnClickListener((View.OnClickListener) this);
     }
     public void onClick (View v){
-        Intent intent = new Intent(StartActivity.this, MainActivity.class);
+        Intent intent = new Intent(StartActivity.this, ActivityView.class);
         startActivity(intent);
     }
 
