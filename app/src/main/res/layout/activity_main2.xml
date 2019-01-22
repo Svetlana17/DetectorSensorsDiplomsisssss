@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Main2Activity">
+    <Spinner
+        android:id="@+id/spinner"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:entries="@array/list" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph_accelerometr_both"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_marginTop="36dp"
+        android:layout_weight="1"
+        android:background="@android:color/darker_gray"
+        app:layout_constraintTop_toBottomOf="@+id/spinner"
+        tools:layout_editor_absoluteX="0dp" />
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph_gyroscope_both"
+        android:layout_width="match_parent"
+        android:layout_height="150dp"
+        android:layout_weight="1"
+        android:background="@android:color/darker_gray"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="210dp" />
+
+    <Button
+        android:id="@+id/button2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Start"
+        tools:layout_editor_absoluteX="27dp"
+        tools:layout_editor_absoluteY="416dp" />
+
+    <Button
+        android:id="@+id/button3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Stop"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="416dp" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Send"
+        tools:layout_editor_absoluteX="280dp"
+        tools:layout_editor_absoluteY="416dp" />
+
+    <EditText
+        android:id="@+id/editK"
+        android:layout_width="70dp"
+        android:layout_height="170dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:ems="10"
+        android:hint="k"
+        android:inputType="number|numberDecimal"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="360dp"
+        tools:layout_height="wrap_content" />
+
+    <EditText
+        android:id="@+id/editAlpha"
+        android:layout_width="70dp"
+        android:layout_height="170dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:ems="10"
+        android:hint="k"
+        android:inputType="number|numberDecimal"
+        tools:layout_editor_absoluteX="70dp"
+        tools:layout_editor_absoluteY="360dp"
+        tools:layout_height="wrap_content" />
+
+    <Button
+        android:id="@+id/button5"
+        android:layout_width="62dp"
+        android:layout_height="wrap_content"
+        android:text="X"
+        tools:layout_editor_absoluteX="27dp"
+        tools:layout_editor_absoluteY="464dp" />
+
+    <Button
+        android:id="@+id/button6"
+        android:layout_width="62dp"
+        android:layout_height="wrap_content"
+        android:text="Y"
+        tools:layout_editor_absoluteX="89dp"
+        tools:layout_editor_absoluteY="464dp" />
+
+    <Button
+        android:id="@+id/button7"
+        android:layout_width="62dp"
+        android:layout_height="wrap_content"
+        android:text="Z"
+        tools:layout_editor_absoluteX="148dp"
+        tools:layout_editor_absoluteY="464dp" />
+
+    <Button
+        android:id="@+id/button9"
+        android:layout_width="62dp"
+        android:layout_height="wrap_content"
+        android:text="All"
+        tools:layout_editor_absoluteX="210dp"
+        tools:layout_editor_absoluteY="464dp" />
+
+    <Button
+        android:id="@+id/button10"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Cancler"
+        tools:layout_editor_absoluteX="279dp"
+        tools:layout_editor_absoluteY="463dp" />
+
+
+</android.support.constraint.ConstraintLayout>
