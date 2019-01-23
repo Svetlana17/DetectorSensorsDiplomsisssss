@@ -16,4 +16,8 @@
         android:id="@+id/main"
         android:orderInCategory="4"
         android:title="Главная" />
+    <item
+        android:id="@+id/record"
+        android:orderInCategory="4"
+        android:title="Запись" />
 </menu>

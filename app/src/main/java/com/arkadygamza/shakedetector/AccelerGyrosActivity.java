@@ -76,24 +76,21 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_acceler_gyros);
+      //  setContentView(R.layout.activity_acceler_gyros);
+        setContentView(R.layout.layout_three);
 
         if (savedInstanceState == null) {
             VIEWPORT_SECONDS = 5;
         } else { VIEWPORT_SECONDS = (int) savedInstanceState.getSerializable("VIEWPORT_SECONDS"); }
 
         ///
-        shareButton=(Button)findViewById(R.id.button3);
+        shareButton=(Button)findViewById(R.id.send);
         shareButton.setOnClickListener(new View.OnClickListener() {
-
-
-            @Override
+                        @Override
             public void onClick(View v) { share(); }}
         );
         isRunning = false;
-
         manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-
         buttonStart = (Button)findViewById(R.id.button);
         buttonStop = (Button)findViewById(R.id.stop);
         editAlpha = (EditText)findViewById(R.id.editAlpha);
@@ -134,7 +131,6 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
                 return true;
             }
         });
-
         buttonStop.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
@@ -152,7 +148,6 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
             }
         });
    // }
-///
     increaseValue = new HashMap<>();
         increaseValue.put("X", 0.0);
         increaseValue.put("Y", 0.0);
@@ -162,30 +157,30 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
                 ArrayAdapter.createFromResource(this, R.array.list, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        textView= (TextView) findViewById(R.id.tv);
-        textView.setText(String.valueOf(VIEWPORT_SECONDS));
-        SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar_both);
-        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
-            @Override
-            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-              //  mPlotters.get(0).changeViewPort(i);
-             //   mPlotters.get(1).changeViewPort(i);
-                if(i>0){
-                    VIEWPORT_SECONDS=i;
-                    textView.setText(String.valueOf(i));
-                }else {
-                    VIEWPORT_SECONDS=1;
-                    textView.setText("1");
-                }
-            }
-            @Override
-            public void onStartTrackingTouch(SeekBar seekBar) {
-            }
-            @Override
-            public void onStopTrackingTouch(SeekBar seekBar) {
-            restartActivity(AccelerGyrosActivity.this);
-            }
-        });
+       // textView= (TextView) findViewById(R.id.tv);
+//        textView.setText(String.valueOf(VIEWPORT_SECONDS));
+//        SeekBar seekBar = (SeekBar) findViewById(R.id.seekBar_both);
+//        seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
+//            @Override
+//            public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
+//              //  mPlotters.get(0).changeViewPort(i);
+//             //   mPlotters.get(1).changeViewPort(i);
+//                if(i>0){
+//                    VIEWPORT_SECONDS=i;
+//                    textView.setText(String.valueOf(i));
+//                }else {
+//                    VIEWPORT_SECONDS=1;
+//                    textView.setText("1");
+//                }
+//            }
+//            @Override
+//            public void onStartTrackingTouch(SeekBar seekBar) {
+//            }
+//            @Override
+//            public void onStopTrackingTouch(SeekBar seekBar) {
+//            restartActivity(AccelerGyrosActivity.this);
+//            }
+//        });
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -388,7 +383,6 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
             try {
                 switch(evt.sensor.getType()) {
                     case Sensor.TYPE_GYROSCOPE:
-
                         data.setGyr(evt);
                         if(data.isAccDataExists()){
                             writer.write(data.getStringData());
@@ -430,7 +424,6 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
             Toast.makeText(getApplicationContext(), "Can't send file!", Toast.LENGTH_LONG).show();
         }
     }
-
     private static void zipFile(ZipOutputStream zos, File file) throws IOException {
         zos.putNextEntry(new ZipEntry(file.getName()));
         FileInputStream fis = new FileInputStream(file);
@@ -445,7 +438,6 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
         }
         zos.closeEntry();
     }
-
     private static void safeClose(FileInputStream fis) {
         try {
             fis.close();
@@ -453,7 +445,6 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
             e.printStackTrace();
         }
     }
-
     private void sendBundleInfo(File file) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setType("message/rfc822");
@@ -462,41 +453,31 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
     }
    // @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
-
     }
 }
-
 class SensorData {
-
     private SensorEvent gyrEvent;
     private SensorEvent accEvent;
-
     private float xaf, yaf, zaf;
     private float xgf, ygf, zgf;
     private float alpha = 0.05f;
     private float k = 0.5f;
-
     public void setParams(float alpha, float k){
         this.alpha = alpha;
         this.k = k;
     }
-
     public void setGyr(SensorEvent gyrEvent){
         this.gyrEvent = gyrEvent;
     }
-
     public void setAcc(SensorEvent accEvent){
         this.accEvent = accEvent;
     }
-
     public boolean isAccDataExists(){
         return accEvent != null;
     }
-
     public boolean isGyrDataExists(){
         return gyrEvent != null;
     }
-
     public void clear(){
         gyrEvent = null;
         accEvent = null;
@@ -514,4 +495,3 @@ class SensorData {
     }
 }
 
-//}

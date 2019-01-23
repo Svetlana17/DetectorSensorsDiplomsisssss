@@ -199,6 +199,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent i = new Intent(MainActivity.this,AccelerGyrosActivity.class);
                 startActivity(i);
                 return true;
+            case R.id.record:
+                state="record";
+                Intent is = new Intent(MainActivity.this,RecordActivity.class);
+                startActivity(is);
+                return true;
+
 
             default:
                 return true;

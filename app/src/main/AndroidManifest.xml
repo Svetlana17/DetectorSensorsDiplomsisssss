@@ -10,7 +10,7 @@
         android:theme="@style/AppTheme">
         <activity
             android:name=".MainActivity"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity android:name=".GyroscopeActivity" />
         <activity android:name=".AccelerGyrosActivity" />
         <activity android:name=".StartActivity">
@@ -20,7 +20,8 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ActivityView"></activity>
+        <activity android:name=".ActivityView" />
+        <activity android:name=".RecordActivity"></activity>
     </application>
 
 </manifest>

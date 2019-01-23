@@ -16,20 +16,17 @@
     <com.jjoe64.graphview.GraphView
         android:id="@+id/graph_accelerometr_both"
         android:layout_width="match_parent"
-        android:layout_height="124dp"
-        android:layout_weight="1"
-        android:background="@android:color/darker_gray" />
-
-    <com.jjoe64.graphview.GraphView
-        android:id="@+id/graph_gyroscope_both"
-        android:layout_width="match_parent"
-        android:layout_height="124dp"
+        android:layout_height="123dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="18dp"
         android:layout_weight="1"
         android:background="@android:color/darker_gray" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
-        android:layout_height="45dp"
+        android:layout_height="65dp"
         android:orientation="horizontal">
 
         <TextView
@@ -92,15 +89,15 @@
         <EditText
             android:id="@+id/editK"
             android:layout_width="match_parent"
-            android:layout_height="150dp"
+            android:layout_height="200dp"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_alignParentBottom="true"
-            android:layout_marginStart="0dp"
+            android:layout_marginStart="12dp"
             android:layout_marginLeft="16dp"
             android:layout_marginTop="0dp"
-            android:layout_marginEnd="32dp"
+            android:layout_marginEnd="20dp"
             android:layout_marginRight="16dp"
             android:layout_marginBottom="0dp"
             android:ems="10"
@@ -126,6 +123,17 @@
 
 
     </RelativeLayout>
+
+    <com.jjoe64.graphview.GraphView
+        android:id="@+id/graph_gyroscope_both"
+        android:layout_width="match_parent"
+        android:layout_height="115dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="114dp"
+        android:layout_weight="1"
+        android:background="@android:color/darker_gray" />
 
     <RelativeLayout
         android:layout_width="wrap_content"
