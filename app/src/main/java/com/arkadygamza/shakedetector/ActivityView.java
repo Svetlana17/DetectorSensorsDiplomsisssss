@@ -167,7 +167,15 @@ public class ActivityView extends AppCompatActivity  implements  View.OnClickLis
                 Intent i = new Intent(ActivityView.this,StartActivity.class);
                 startActivity(i);
                 return true;
-
+            case R.id.record:
+                state="record";
+                Intent ir=new Intent(ActivityView.this,RecordActivity.class);
+                startActivity(ir);
+                return  true;
+            case  R.id.movement:
+                state="movement";
+                Intent intetnm=new Intent(ActivityView.this,MovementActivity.class);
+                startActivity(intetnm);
             default:
                 return true;
         }

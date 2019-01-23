@@ -21,7 +21,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".ActivityView" />
-        <activity android:name=".RecordActivity"></activity>
+        <activity android:name=".RecordActivity" />
+        <activity android:name=".MovementActivity"></activity>
     </application>
 
 </manifest>
