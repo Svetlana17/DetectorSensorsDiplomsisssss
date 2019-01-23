@@ -46,6 +46,7 @@ import rx.functions.Action1;
 import rx.functions.Func2;
 
 public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEventListener, View.OnClickListener {
+
     private final List<SensorPlotterPrint> mPlotters = new ArrayList<>(3);
     private Observable<?> mShakeObservable;
     private Subscription mShakeSubscription;
@@ -150,9 +151,9 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
                 return true;
             }
         });
-        // }
+   // }
 ///
-        increaseValue = new HashMap<>();
+    increaseValue = new HashMap<>();
         increaseValue.put("X", 0.0);
         increaseValue.put("Y", 0.0);
         increaseValue.put("Z", 0.0);
@@ -167,8 +168,8 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
         seekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
-                //  mPlotters.get(0).changeViewPort(i);
-                //   mPlotters.get(1).changeViewPort(i);
+              //  mPlotters.get(0).changeViewPort(i);
+             //   mPlotters.get(1).changeViewPort(i);
                 if(i>0){
                     VIEWPORT_SECONDS=i;
                     textView.setText(String.valueOf(i));
@@ -182,7 +183,7 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
             }
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
-                restartActivity(AccelerGyrosActivity.this);
+            restartActivity(AccelerGyrosActivity.this);
             }
         });
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -264,9 +265,9 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
     }
     @Override
     protected void onSaveInstanceState(Bundle outState) {
-        if(VIEWPORT_SECONDS>0){
-            outState.putSerializable("VIEWPORT_SECONDS", VIEWPORT_SECONDS);
-        }}
+      if(VIEWPORT_SECONDS>0){
+          outState.putSerializable("VIEWPORT_SECONDS", VIEWPORT_SECONDS);
+      }}
     public void updateIncValue(String line, String value) {
         increaseValue.put(line, Double.valueOf(value));
         changeIncValue(increaseValue);
@@ -459,7 +460,7 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
         emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file));
         startActivity(Intent.createChooser(emailIntent, "Send data"));
     }
-    // @Override
+   // @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
 
     }

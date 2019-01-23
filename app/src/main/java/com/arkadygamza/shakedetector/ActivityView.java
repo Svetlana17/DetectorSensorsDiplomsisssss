@@ -152,13 +152,16 @@ public class ActivityView extends AppCompatActivity  implements  View.OnClickLis
                 Intent intent = new Intent(ActivityView.this,GyroscopeActivity.class);
                 startActivity(intent);
                 return true;
-
             case R.id.line_accelerometr:
                 state = "accelerometr";
                 Intent intents = new Intent(ActivityView.this,MainActivity.class);
                 startActivity(intents);
                 return true;
-
+            case R.id.line_accelerometr_geroscope:
+                state="gyroscope_acselerometr";
+                Intent intent1=new Intent(ActivityView.this, AccelerGyrosActivity.class);
+                startActivity(intent1);
+                return  true;
             case R.id.main:
                 state="main";
                 Intent i = new Intent(ActivityView.this,StartActivity.class);

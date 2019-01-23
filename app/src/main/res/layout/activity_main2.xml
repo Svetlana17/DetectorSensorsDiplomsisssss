@@ -4,58 +4,65 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Main2Activity">
+    tools:context=".AccelerGyrosActivity">
     <Spinner
-        android:id="@+id/spinner"
+        android:id="@+id/spinnerS"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:entries="@array/list" />
 
     <com.jjoe64.graphview.GraphView
-        android:id="@+id/graph_accelerometr_both"
+        android:id="@+id/graph_accelerometr"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_marginTop="36dp"
+        android:layout_marginBottom="8dp"
         android:layout_weight="1"
         android:background="@android:color/darker_gray"
+        app:layout_constraintBottom_toTopOf="@+id/graph_gyroscope"
         app:layout_constraintTop_toBottomOf="@+id/spinner"
+        tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="0dp" />
 
     <com.jjoe64.graphview.GraphView
-        android:id="@+id/graph_gyroscope_both"
+        android:id="@+id/graph_gyroscope"
         android:layout_width="match_parent"
         android:layout_height="150dp"
         android:layout_weight="1"
         android:background="@android:color/darker_gray"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="210dp" />
+        tools:layout_editor_absoluteY="210dp"
+        tools:ignore="MissingConstraints" />
 
     <Button
-        android:id="@+id/button2"
+        android:id="@+id/buttonStart"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Start"
         tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="416dp" />
+        tools:layout_editor_absoluteY="416dp"
+        tools:ignore="MissingConstraints" />
 
     <Button
-        android:id="@+id/button3"
+        android:id="@+id/Stop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Stop"
         tools:layout_editor_absoluteX="148dp"
-        tools:layout_editor_absoluteY="416dp" />
+        tools:layout_editor_absoluteY="416dp"
+        tools:ignore="MissingConstraints" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/share"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Send"
+        android:text="Отправить"
         tools:layout_editor_absoluteX="280dp"
-        tools:layout_editor_absoluteY="416dp" />
+        tools:layout_editor_absoluteY="416dp"
+        tools:ignore="MissingConstraints" />
 
     <EditText
-        android:id="@+id/editK"
+        android:id="@+id/editKf"
         android:layout_width="70dp"
         android:layout_height="170dp"
         android:layout_alignParentTop="true"
@@ -66,10 +73,11 @@
         android:inputType="number|numberDecimal"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="360dp"
-        tools:layout_height="wrap_content" />
+        tools:layout_height="wrap_content"
+        tools:ignore="MissingConstraints" />
 
     <EditText
-        android:id="@+id/editAlpha"
+        android:id="@+id/editAlphaS"
         android:layout_width="70dp"
         android:layout_height="170dp"
         android:layout_alignParentTop="true"
@@ -80,7 +88,8 @@
         android:inputType="number|numberDecimal"
         tools:layout_editor_absoluteX="70dp"
         tools:layout_editor_absoluteY="360dp"
-        tools:layout_height="wrap_content" />
+        tools:layout_height="wrap_content"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/button5"
@@ -88,7 +97,8 @@
         android:layout_height="wrap_content"
         android:text="X"
         tools:layout_editor_absoluteX="27dp"
-        tools:layout_editor_absoluteY="464dp" />
+        tools:layout_editor_absoluteY="464dp"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/button6"
@@ -96,7 +106,8 @@
         android:layout_height="wrap_content"
         android:text="Y"
         tools:layout_editor_absoluteX="89dp"
-        tools:layout_editor_absoluteY="464dp" />
+        tools:layout_editor_absoluteY="464dp"
+        tools:ignore="MissingConstraints" />
 
     <Button
         android:id="@+id/button7"
@@ -121,6 +132,11 @@
         android:text="Cancler"
         tools:layout_editor_absoluteX="279dp"
         tools:layout_editor_absoluteY="463dp" />
+
+    <EditText
+        android:id="@+id/editValueS"
+        android:layout_width="20dp"
+        android:layout_height="10dp" />
 
 
 </android.support.constraint.ConstraintLayout>

@@ -33,7 +33,8 @@ public class SensorEventObservableFactory {
                 }
             };
 
-            sensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_GAME);
+            //sensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_GAME);
+            sensorManager.registerListener(listener, sensor, 100);
 
             // unregister listener in main thread when being unsubscribed
             subscriber.add(new MainThreadSubscription() {
