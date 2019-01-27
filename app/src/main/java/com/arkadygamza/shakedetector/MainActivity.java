@@ -55,7 +55,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (savedInstanceState == null || !savedInstanceState.containsKey("VIEWPORT_SECONDS")) {VIEWPORT_SECONDS=10;
         } else {
            VIEWPORT_SECONDS = (int) savedInstanceState.getSerializable("VIEWPORT_SECONDS");
-
         }
 
         increaseValue = new HashMap<>();

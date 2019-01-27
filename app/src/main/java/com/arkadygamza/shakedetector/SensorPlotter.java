@@ -42,6 +42,7 @@ public class SensorPlotter {
     private String state;
     private Map<String,Double> incValue;
     private float[] output;
+    private float xx, yy, zz;
     public SensorPlotter(@NonNull String name, @NonNull  GraphView graphView,
                          @NonNull Observable<SensorEvent> sensorEventObservable,String state,Map<String,Double> incValue) {
         this.incValue = incValue;
@@ -96,35 +97,13 @@ public class SensorPlotter {
 
         mSeriesYf.setColor(Color.GRAY);
         mSeriesYf.setTitle("YF");
-   //     Paint paintss = new Paint();
-//        paintsss.setStyle(Paint.Style.STROKE);
-//        paintsss.setStrokeWidth(10);
-//        paint.setPathEffect(new DashPathEffect(new float[]{8, 5}, 0));
-//        mSeriesYf.setCustomPaint(paintsss);
-//
         mSeriesZs.setColor(Color.BLUE);
         mSeriesZs.setTitle("Z");
-        //  Paint paintsss = new Paint();
-//        paintsss.setStyle(Paint.Style.STROKE);
-//        paintsss.setStrokeWidth(10);
-//        paint.setPathEffect(new DashPathEffect(new float[]{8, 5}, 0));
-//        mSeriesZs.setCustomPaint(paintsss);
-//
-
         mSeriesZf.setColor(Color.CYAN);
         mSeriesZf.setTitle("ZF");
         Paint paintd = new Paint();
-//        paintd.setStyle(Paint.Style.STROKE);
-//        paintd.setStrokeWidth(10);
-//        paint.setPathEffect(new DashPathEffect(new float[]{8, 5}, 0));
-//        mSeriesZf.setCustomPaint(paintd);
-
         graphView.addSeries(mSeriesXs);
         Paint paintds = new Paint();
-//        paintds.setStyle(Paint.Style.STROKE);
-//        paintds.setStrokeWidth(10);
-//        paint.setPathEffect(new DashPathEffect(new float[]{8, 5}, 0));
-//        mSeriesZf.setCustomPaint(paintd);
         graphView.addSeries(mSeriesXf);
         graphView.addSeries(mSeriesYs);
         graphView.addSeries(mSeriesYf);
@@ -138,31 +117,26 @@ public class SensorPlotter {
         this.VIEWPORT_SECONDS=v; System.out.println(VIEWPORT_SECONDS + "!!!!!!!!");
         mName = name;
         mSensorEventObservable = sensorEventObservable;
-
         graphView.getViewport().setXAxisBoundsManual(true);
         graphView.getViewport().setMinX(0);
         graphView.getViewport().setMaxX(VIEWPORT_SECONDS * 1000); // number of ms in viewport
-
         graphView.getViewport().setYAxisBoundsManual(true);
         graphView.getViewport().setMinY(-20);
         graphView.getViewport().setMaxY(20);
-
         graphView.getGridLabelRenderer().setHorizontalLabelsVisible(true);
         graphView.getGridLabelRenderer().setVerticalLabelsVisible(true);
-
         mSeriesXs = new LineGraphSeries<>();
         mSeriesXf = new LineGraphSeries<>();
         mSeriesYs = new LineGraphSeries<>();
         mSeriesYf = new LineGraphSeries<>();
         mSeriesZs = new LineGraphSeries<>();
         mSeriesZf = new LineGraphSeries<>();
-
         mSeriesXs.setColor(Color.RED);
         mSeriesXs.setTitle("X");
         mSeriesXs.getDataPointsRadius();
         mSeriesXs.setDataPointsRadius(20);
         mSeriesXf.setColor(Color.YELLOW);
-        mSeriesXf.setTitle("Ygggggggggggggggggggggggggggggggggggggggggggggggggggg");
+        mSeriesXf.setTitle("Y");
         mSeriesYs.setColor(Color.GREEN);
         mSeriesYf.setColor(Color.GRAY);
         mSeriesZs.setColor(Color.BLUE);
@@ -192,9 +166,7 @@ public class SensorPlotter {
         switch (state) {
             case "X":
                 appendData(mSeriesXs, event.values[0]);
-
-
-               appendData(mSeriesXf, incValue.get("X")+(1-incValue.get("X"))*event.values[0]);
+                appendData(mSeriesXf, xx+incValue.get("X")*(event.values[0]-xx));
                 break;
             case "XG":
                 appendData(mSeriesXs, event.values[0]);
@@ -202,7 +174,7 @@ public class SensorPlotter {
                 break;
             case "Y":
                 appendData(mSeriesYs, event.values[1]);
-                appendData(mSeriesYf, incValue.get("Y")+(1-incValue.get("Y"))*event.values[1]);
+                appendData(mSeriesYf, yy+incValue.get("Y")+(event.values[1]-yy));
                 break;
             case "YG":
                 appendData(mSeriesYs, event.values[1]);
@@ -210,7 +182,7 @@ public class SensorPlotter {
                 break;
             case "Z":
                 appendData(mSeriesZs, event.values[2]);
-                appendData(mSeriesZf, incValue.get("Z")+(1-incValue.get("Z"))*event.values[2]);
+                appendData(mSeriesZf, zz+incValue.get("Z")*(event.values[2]-zz));
                 break;
             case "ZG":
                 appendData(mSeriesZs, event.values[0]);
@@ -241,42 +213,7 @@ public class SensorPlotter {
 
         return valueX;
     }
-    /*
-      public double average(double valueX) {
-        if (oldValueX == null) {
-            oldValueX = valueX;
-            //  return value;
-        }
-        double newValueX=oldValueX+alpha*(valueX-oldValueX);
-                //alpha*value+(1-alpha)*oldValue;
-        oldValueX = newValueX;
-        return newValueX;
-    }
 
-
-    public double averageY(double valueY) {
-        if (oldValueY == null) {
-            oldValueY= valueY;
-            //  return value;
-        }
-        double newValueY=oldValueY+alpha*(valueY-oldValueY);
-        //alpha*value+(1-alpha)*oldValue;
-        oldValueY= newValueY;
-        return newValueY;
-    }
-
-    public double averageZ(double valueZ) {
-        if (oldValueZ == null) {
-            oldValueZ= valueZ;
-            //  return value;
-        }
-        double newValueZ=oldValueZ+alpha*(valueZ-oldValueZ);
-        //alpha*value+(1-alpha)*oldValue;
-        oldValueZ= newValueZ;
-        return newValueZ;
-    }
-
-     */
 
     private boolean canUpdateUi() {
         long now = System.currentTimeMillis();
