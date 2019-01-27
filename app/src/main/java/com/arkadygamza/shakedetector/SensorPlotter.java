@@ -195,7 +195,6 @@ public class SensorPlotter {
 
 
                appendData(mSeriesXf, incValue.get("X")+(1-incValue.get("X"))*event.values[0]);
-               //appendData(mSeriesXf,   incValue.get("X") * output[0] + (1 - incValue.get("X")) * event.values[0]);
                 break;
             case "XG":
                 appendData(mSeriesXs, event.values[0]);
@@ -211,15 +210,11 @@ public class SensorPlotter {
                 break;
             case "Z":
                 appendData(mSeriesZs, event.values[2]);
-
                 appendData(mSeriesZf, incValue.get("Z")+(1-incValue.get("Z"))*event.values[2]);
-
                 break;
             case "ZG":
                 appendData(mSeriesZs, event.values[0]);
-
                 appendData(mSeriesZf, 1-incValue.get("Z")*event.values[2]);
-
                 break;
             case "DEFAULT":
                 appendData(mSeriesXs, event.values[0]);
@@ -240,9 +235,7 @@ public class SensorPlotter {
 
         }
     }
-//    public  double averageAcelerometr(double valueX){
-//        valueX=incValue.get("X");
-//    }
+
     public double average(double valueX) {
         // valueX=alpha*valueX+(1-alpha)*incValue.get("X");
 

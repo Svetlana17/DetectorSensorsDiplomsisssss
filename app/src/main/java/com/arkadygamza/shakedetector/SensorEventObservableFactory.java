@@ -16,25 +16,22 @@ public class SensorEventObservableFactory {
     public static Observable<SensorEvent> createSensorEventObservable(@NonNull Sensor sensor, @NonNull SensorManager sensorManager) {
         return Observable.create(subscriber -> {
             MainThreadSubscription.verifyMainThread();
-
             SensorEventListener listener = new SensorEventListener() {
                 @Override
                 public void onSensorChanged(SensorEvent event) {
                     if (subscriber.isUnsubscribed()) {
                         return;
                     }
-
                     subscriber.onNext(event);
                 }
-
                 @Override
                 public void onAccuracyChanged(Sensor sensor, int accuracy) {
                     // NO-OP
                 }
             };
-
             //sensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_GAME);
-            sensorManager.registerListener(listener, sensor, 100);
+            sensorManager.registerListener(listener, sensor, 1000);///
+            ///4 параметр// максимальной задержкой передачи.
 
             // unregister listener in main thread when being unsubscribed
             subscriber.add(new MainThreadSubscription() {
