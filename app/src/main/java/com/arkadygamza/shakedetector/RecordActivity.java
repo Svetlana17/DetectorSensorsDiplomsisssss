@@ -348,4 +348,6 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
                     gyrEvent.values[0], gyrEvent.values[1], gyrEvent.values[2], xgf, ygf, zgf);
         }
     }
+
+
 }
