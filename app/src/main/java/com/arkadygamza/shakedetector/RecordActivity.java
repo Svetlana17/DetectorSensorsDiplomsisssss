@@ -11,6 +11,8 @@ import android.hardware.SensorManager;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
@@ -47,12 +49,32 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
     StringBuilder sb = new StringBuilder();
     TextView tvText;
 
+    EditText editTextShag;
+    int v;
+    long t;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_record);
+        editTextShag=(EditText)findViewById(R.id.editShag);
+        editTextShag.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+            v=Integer.parseInt(editable.toString());
+            }
+        });
         shareButton = (Button) findViewById(R.id.buttonShare);
         shareButton.setOnClickListener(new View.OnClickListener() {
 
@@ -100,8 +122,8 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
                     e.printStackTrace();
                 }
 
-                manager.registerListener(RecordActivity.this, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), 0);//выносить
-                manager.registerListener(RecordActivity.this, manager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), 0);///выносить
+                manager.registerListener(RecordActivity.this, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), v*1000);//выносить
+                manager.registerListener(RecordActivity.this, manager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), v*1000);///выносить
 
                 isRunning = true;
                 return true;
@@ -162,8 +184,8 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
 //                SensorManager.SENSOR_DELAY_NORMAL);
 //        manager.registerListener(listener, sensorGiros,
 //                SensorManager.SENSOR_DELAY_NORMAL);
-      //  manager.registerListener(listener, sensorAccel, 60000000);
-     //   manager.registerListener(listener, sensorGiros, 60000000);
+        manager.registerListener(listener, sensorAccel, 60000000);
+        manager.registerListener(listener, sensorGiros, 60000000);
 
 
         timer = new Timer();
@@ -216,13 +238,24 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
     @Override
     public void onSensorChanged(SensorEvent evt) {
         if (isRunning) {
+            if(t==0){
+                t=System.currentTimeMillis();
+            }
+            long s=System.currentTimeMillis()-t;
             try {
                 switch (evt.sensor.getType()) {
                     case Sensor.TYPE_GYROSCOPE:
 
+                       // Calendar cal = Calendar.getInstance();
+                       // cal.setTimeInMillis( System.currentTimeMillis() / 1000000L);
+                       // String date = DateFormat.format("dd-MM-yyyy hh:mm:ss", cal).toString();
+
+//                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+//                        String date = sdf.format(new Date());
+//
                         data.setGyr(evt);
                         if (data.isAccDataExists()) {
-                            writer.write(data.getStringData());
+                            writer.write(data.getStringData(s));
                             data.clear();
                         }
 
@@ -231,7 +264,7 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
 
                         data.setAcc(evt);
                         if (data.isGyrDataExists()) {
-                            writer.write(data.getStringData());
+                            writer.write(data.getStringData(s));
                             data.clear();
                         }
                         break;
@@ -240,7 +273,6 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
                 e.printStackTrace();
             }
         }
-        //    manager.registerListener(listener, sensorAccel, 100);
 
     }
 
@@ -336,16 +368,21 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
             accEvent = null;
         }
 
-        public String getStringData() {
+        public String getStringData(long date) {
             xaf = xaf + alpha * (accEvent.values[0] - xaf);
             yaf = yaf + alpha * (accEvent.values[1] - yaf);
             zaf = zaf + alpha * (accEvent.values[2] - zaf);
             xgf = 1 - k * gyrEvent.values[0];
             ygf = 1 - k * gyrEvent.values[1];
             zgf = (1 - k) * gyrEvent.values[2];
-            return String.format("%d; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f;\n", gyrEvent.timestamp,
+
+            return String.format("%d; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f;\n",
+
+                   // System.currentTimeMillis() - SystemClock.elapsedRealtime()* 1000000+gyrEvent.timestamp,
+                          //  + gyrEvent.timestamp,
+                   date,
                     accEvent.values[0], accEvent.values[1], accEvent.values[2], xaf, yaf, zaf,
-                    gyrEvent.values[0], gyrEvent.values[1], gyrEvent.values[2], xgf, ygf, zgf);
+                    gyrEvent.values[0], gyrEvent.values[1], gyrEvent.values[2], xgf, ygf, zgf, v);
         }
     }
 
