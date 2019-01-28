@@ -100,8 +100,8 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
                     e.printStackTrace();
                 }
 
-                manager.registerListener(RecordActivity.this, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), 0);
-                manager.registerListener(RecordActivity.this, manager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), 0);
+                manager.registerListener(RecordActivity.this, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), 0);//выносить
+                manager.registerListener(RecordActivity.this, manager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), 0);///выносить
 
                 isRunning = true;
                 return true;
@@ -162,8 +162,8 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
 //                SensorManager.SENSOR_DELAY_NORMAL);
 //        manager.registerListener(listener, sensorGiros,
 //                SensorManager.SENSOR_DELAY_NORMAL);
-        manager.registerListener(listener, sensorAccel, 60000000);
-        manager.registerListener(listener, sensorGiros, 60000000);
+      //  manager.registerListener(listener, sensorAccel, 60000000);
+     //   manager.registerListener(listener, sensorGiros, 60000000);
 
 
         timer = new Timer();
