@@ -374,9 +374,12 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
             xaf = xaf + alpha * (accEvent.values[0] - xaf);
             yaf = yaf + alpha * (accEvent.values[1] - yaf);
             zaf = zaf + alpha * (accEvent.values[2] - zaf);
-            xgf = 1 - k * gyrEvent.values[0];
-            ygf = 1 - k * gyrEvent.values[1];
-            zgf = (1 - k) * gyrEvent.values[2];
+//            xgf = 1 - k * gyrEvent.values[0];
+//            ygf = 1 - k * gyrEvent.values[1];
+//            zgf = (1 - k) * gyrEvent.values[2];
+            xgf = ((1-k)*gyrEvent.values[0])+(k*accEvent.values[0]);
+            ygf = ((1-k)*gyrEvent.values[1])+(k*accEvent.values[1]);
+            zgf = ((1-k)*gyrEvent.values[2])+(k*accEvent.values[2]);
 
             return String.format("%d; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f;\n",
 

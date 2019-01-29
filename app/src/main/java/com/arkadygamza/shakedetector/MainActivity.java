@@ -67,6 +67,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ArrayAdapter.createFromResource(this, R.array.list, android.R.layout.simple_spinner_item);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
+
+
         shagValue= (EditText) findViewById(R.id.value_shag);
         button=(Button) findViewById(R.id.shag);
         button.setOnClickListener(new View.OnClickListener() {
@@ -79,6 +81,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 restartActivity(MainActivity.this);
             }
         });
+
+
+
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {

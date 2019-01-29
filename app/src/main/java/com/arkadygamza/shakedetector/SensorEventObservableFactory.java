@@ -30,7 +30,7 @@ public class SensorEventObservableFactory {
                 }
             };
             //sensorManager.registerListener(listener, sensor, SensorManager.SENSOR_DELAY_GAME);
-            sensorManager.registerListener(listener, sensor, 1000);///
+            sensorManager.registerListener(listener, sensor, 1);///
             ///4 параметр// максимальной задержкой передачи.
 
             // unregister listener in main thread when being unsubscribed
