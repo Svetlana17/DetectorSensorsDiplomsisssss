@@ -24,6 +24,10 @@
         android:id="@+id/movement"
         android:orderInCategory="4"
         android:title="Перемещение" />
-
+    <item
+        android:id="@+id/test"
+        android:orderInCategory="5"
+        android:icon="@color/colorFirst"
+        android:title="Перемещение" />
 
 </menu>
