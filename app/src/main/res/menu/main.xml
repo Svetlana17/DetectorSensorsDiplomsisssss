@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <item
         android:id="@+id/line_gyroscope"
         android:orderInCategory="1"
@@ -18,7 +19,10 @@
         android:title="Главная" />
     <item
         android:id="@+id/record"
-        android:orderInCategory="4"
+
+        app:showAsAction="always"
+        android:visible="true"
+        android:icon="@drawable/ic_create_black_48dp"
         android:title="Запись" />
     <item
         android:id="@+id/movement"
