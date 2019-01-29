@@ -193,13 +193,15 @@ EditText shagValue;
             case R.id.line_gyroscope:
                 state = "gyroscope";
                 return true;
-
             case R.id.line_accelerometr:
                 state = "accelerometr";
                 Intent intent = new Intent(GyroscopeActivity.this,MainActivity.class);
                 startActivity(intent);
                 return true;
-
+            case R.id.record:
+                state="record";
+                Intent i=new Intent(GyroscopeActivity.this,RecordActivity.class);
+                startActivity(i);
             default:
                 return true;
         }

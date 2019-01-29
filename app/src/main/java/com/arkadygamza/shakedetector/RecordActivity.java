@@ -14,6 +14,8 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
@@ -48,7 +50,7 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
     Sensor sensorGiros;
     StringBuilder sb = new StringBuilder();
     TextView tvText;
-
+    public String state = "DEFAULTG";
     EditText editTextShag;
     int v;
     long t;
@@ -374,8 +376,8 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
             xaf = xaf + alpha * (accEvent.values[0] - xaf);
             yaf = yaf + alpha * (accEvent.values[1] - yaf);
             zaf = zaf + alpha * (accEvent.values[2] - zaf);
-//            xgf = 1 - k * gyrEvent.values[0];
-//            ygf = 1 - k * gyrEvent.values[1];
+//            xgf = (1 - k) * gyrEvent.values[0];
+//            ygf = (1 - k )* gyrEvent.values[1];
 //            zgf = (1 - k) * gyrEvent.values[2];
             xgf = ((1-k)*gyrEvent.values[0])+(k*accEvent.values[0]);
             ygf = ((1-k)*gyrEvent.values[1])+(k*accEvent.values[1]);
@@ -388,6 +390,38 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
                    date,
                     accEvent.values[0], accEvent.values[1], accEvent.values[2], xaf, yaf, zaf,
                     gyrEvent.values[0], gyrEvent.values[1], gyrEvent.values[2], xgf, ygf, zgf, v);
+        }
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        switch (id) {
+            case R.id.line_gyroscope:
+                state = "gyroscope";
+                Intent i=new Intent(RecordActivity.this,GyroscopeActivity.class);
+                startActivity(i);
+                return true;
+            case R.id.line_accelerometr:
+                state = "accelerometr";
+                Intent intent = new Intent(RecordActivity.this,MainActivity.class);
+                startActivity(intent);
+                return true;
+            case R.id.movement:
+                state="movement";
+                Intent is=new Intent(RecordActivity.this,MovementActivity.class);
+                startActivity(is);
+            case R.id.start:
+                state="start";
+                Intent start=new Intent(RecordActivity.this, ActivityView.class);
+                startActivity(start);
+            default:
+                return true;
         }
     }
 

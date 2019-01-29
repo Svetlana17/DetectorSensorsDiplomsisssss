@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText shagValue;
     Button button;
     SensorPlotter sensorPlotter;
-    private int VIEWPORT_SECONDS;
+    private int VIEWPORT_SECONDS=8;
    // TextView linX; TextView linY; TextView linZ;
 
     @Override
@@ -77,7 +77,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
                int i= Integer.parseInt(shagValue.getText().toString());
                 sensorPlotter.changeViewPort(i);
-                VIEWPORT_SECONDS=i;
+               // VIEWPORT_SECONDS=i;
                 restartActivity(MainActivity.this);
             }
         });
@@ -208,6 +208,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Intent is = new Intent(MainActivity.this,RecordActivity.class);
                 startActivity(is);
                 return true;
+            case R.id.main:
+                Intent main=new Intent(MainActivity.this, ActivityView.class);
+                startActivity(main);
 
 
             default:
@@ -233,6 +236,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         List<Sensor> linearAccSensors = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER);
         sensorPlotter=(new SensorPlotter("LIN",  graphView, SensorEventObservableFactory.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue, VIEWPORT_SECONDS));
+      //  sensorPlotter=(new SensorPlotter("LIN",  graphView, SensorEventObservableFactory.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue));
         mPlotters.add(sensorPlotter);
     }
 
