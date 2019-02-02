@@ -8,6 +8,9 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,18 +49,20 @@ public class GyroscopeActivity extends AppCompatActivity implements View.OnClick
 EditText shagValue;
  Button button;
  SensorPlotter sensorPlotter;
- private int VIEWPORT_SECONDS;
+ private int VIEWPORT_SECONDS=4;
+    private SensorEventObservableFactory factory1;
+    private SensorEventObservableFactory factory2;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gyroscope);
-       if (savedInstanceState == null || !savedInstanceState.containsKey("VIEWPORT_SECONDS")) {VIEWPORT_SECONDS=10;
-        } else {
-            VIEWPORT_SECONDS = (int) savedInstanceState.getSerializable("VIEWPORT_SECONDS");
-
-        }
+//       if (savedInstanceState == null || !savedInstanceState.containsKey("VIEWPORT_SECONDS")) {VIEWPORT_SECONDS=10;
+//        } else {
+//            VIEWPORT_SECONDS = (int) savedInstanceState.getSerializable("VIEWPORT_SECONDS");
+//
+//        }
 
         increaseValue = new HashMap<>();
         increaseValue.put("X", 0.0);
@@ -70,18 +75,51 @@ EditText shagValue;
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
 
-        shagValue= (EditText) findViewById(R.id.value_shag);
-        button=(Button) findViewById(R.id.shag);
-        button.setOnClickListener(new View.OnClickListener() {
+        //shagValue= (EditText) findViewById(R.id.value_shag);
+        button=(Button) findViewById(R.id.shag1);
+//        button.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View view) {
+//
+//               int i= Integer.parseInt(shagValue.getText().toString());
+//                sensorPlotter.changeViewPort(i);
+//                VIEWPORT_SECONDS=i;
+//                restartActivity(GyroscopeActivity.this);
+//            }
+//        });
+         factory1=new SensorEventObservableFactory();
+         factory2=new SensorEventObservableFactory();
+         EditText editText=(EditText) findViewById(R.id.value_shag_gir);
+         editText.addTextChangedListener(new TextWatcher() {
             @Override
-            public void onClick(View view) {
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
 
-               int i= Integer.parseInt(shagValue.getText().toString());
-                sensorPlotter.changeViewPort(i);
-                VIEWPORT_SECONDS=i;
-                restartActivity(GyroscopeActivity.this);
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String text = editText.getText().toString();
+                try {
+                    int period = Integer.parseInt(text) ;
+                    if(factory2!=null){
+                        factory2.updateperiod(period);
+                    }
+
+                }
+                catch (Exception e){
+                    Log.e("Error", e.getMessage());
+                }
+
+            }
+
+           // }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
             }
         });
+
 
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -164,13 +202,13 @@ EditText shagValue;
         });
     }
 
-    @Override
-    protected void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-        if(VIEWPORT_SECONDS>0){
-            outState.putSerializable("VIEWPORT_SECONDS", VIEWPORT_SECONDS);
-        }
-    }
+//    @Override
+//    protected void onSaveInstanceState(Bundle outState) {
+//        super.onSaveInstanceState(outState);
+//        if(VIEWPORT_SECONDS>0){
+//            outState.putSerializable("VIEWPORT_SECONDS", VIEWPORT_SECONDS);
+//        }
+//    }
 
 
 
@@ -221,7 +259,8 @@ EditText shagValue;
         List<Sensor> linearAccSensors = sensorManager.getSensorList(Sensor.TYPE_GYROSCOPE);
       //  mPlotters.add(new SensorPlotter("GYR", (GraphView) findViewById(R.id.graph_gyroscope), SensorEventObservableFactory.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue));
   /*?????????????????????????*/
-        sensorPlotter=(new SensorPlotter("LIN", (GraphView) findViewById(R.id.graph_gyroscope), SensorEventObservableFactory.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue, VIEWPORT_SECONDS));
+
+        sensorPlotter=(new SensorPlotter("LIN", (GraphView) findViewById(R.id.graph_gyroscope), factory2.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue, VIEWPORT_SECONDS));
         mPlotters.add(sensorPlotter);
 
 

@@ -37,8 +37,8 @@ public class ShakeDetector {
         if (sensorList == null || sensorList.isEmpty()) {
             throw new IllegalStateException("Device has no linear acceleration sensor");
         }
-
-        return SensorEventObservableFactory.createSensorEventObservable(sensorList.get(0), mSensorManager);
+      SensorEventObservableFactory factory1=new SensorEventObservableFactory();
+        return factory1.createSensorEventObservable(sensorList.get(0), mSensorManager);
     }
 
     private static class XEvent {

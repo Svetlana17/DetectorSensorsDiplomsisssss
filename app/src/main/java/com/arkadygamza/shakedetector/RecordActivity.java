@@ -54,6 +54,9 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
     EditText editTextShag;
     int v;
     long t;
+    float vx,vy,vz;
+    float pxaf, pyaf, pzaf;
+    float Sx, Sy, Sz;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +122,11 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
                 Log.d(TAG, "Writing to " + getStorageDir());
                 try {
                     writer = new FileWriter(file);
-                    writer.write("TIME;ACC X;ACC Y;ACC Z;ACC XF;ACC YF;ACC ZF;GYR X; GYR Y; GYR Z; GYR XF; GYR YF; GYR ZF;\n");
+
+                    //writer.write("TIME;ACC X;ACC Y;ACC Z;ACC XF;ACC YF;ACC ZF;GYR X; GYR Y; GYR Z; GYR XF; GYR YF; GYR ZF;\n");
+                //    writer.write("TIME;ACC X;ACC Y;ACC Z;ACC XF;ACC YF;ACC ZF;GYR X; GYR Y; GYR Z; GYR XF; GYR YF; GYR ZF;  VX);
+                    writer.write("TIME;ACC X;ACC Y;ACC Z;ACC XF;ACC YF;ACC ZF;GYR X; GYR Y; GYR Z; GYR XF; GYR YF; GYR ZF;  VX; VY; VZ; VxFiltr;  VyFiltr; VzFiltr; Sx; Sy; Sz\n");
+
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -215,7 +222,8 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
     SensorEventListener listener = new SensorEventListener() {
 
         @Override
-        public void onSensorChanged(SensorEvent event) {
+        public void onSensorChanged(SensorEvent hardEvent) {
+            MySensorEvent event = new MySensorEvent(hardEvent);
             switch (event.sensor.getType()) {
                 case Sensor.TYPE_ACCELEROMETER:
                     for (int i = 0; i < 3; i++) {
@@ -240,15 +248,18 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
     };
 
     @Override
-    public void onSensorChanged(SensorEvent evt) {
+    public void onSensorChanged(SensorEvent event) {
+        MySensorEvent evt=new MySensorEvent(event);
         if (isRunning) {
             if(t==0){
                 t=System.currentTimeMillis();
             }
             long s=System.currentTimeMillis()-t;
+            long date=System.currentTimeMillis();
             try {
                 switch (evt.sensor.getType()) {
                     case Sensor.TYPE_GYROSCOPE:
+                        //evt.timestamp=date;
 
                        // Calendar cal = Calendar.getInstance();
                        // cal.setTimeInMillis( System.currentTimeMillis() / 1000000L);
@@ -260,16 +271,17 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
                         data.setGyr(evt);
                         if (data.isAccDataExists()) {
                             writer.write(data.getStringData(s));
-                            data.clear();
+
+                            //data.clear();
                         }
 
                         break;
                     case Sensor.TYPE_ACCELEROMETER:
-
+                  //    evt.timestamp=date;
                         data.setAcc(evt);
                         if (data.isGyrDataExists()) {
                             writer.write(data.getStringData(s));
-                            data.clear();
+                           // data.clear();
                         }
                         break;
                 }
@@ -338,24 +350,28 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
 
     class SensorData {
 
-        private SensorEvent gyrEvent;
-        private SensorEvent accEvent;
+        private MySensorEvent gyrEvent;
+        private MySensorEvent accEvent;
 
         private float xaf, yaf, zaf;
         private float xgf, ygf, zgf;
         private float alpha = 0.05f;
         private float k = 0.5f;
-
+        float vx,vy,vz;
+        float pxaf, pyaf, pzaf;
+        private MySensorEvent prefaccEvent;
+        private float vxfit, vyfit, vzfit;
         public void setParams(float alpha, float k) {
             this.alpha = alpha;
             this.k = k;
         }
 
-        public void setGyr(SensorEvent gyrEvent) {
+        public void setGyr(MySensorEvent gyrEvent) {
             this.gyrEvent = gyrEvent;
         }
 
-        public void setAcc(SensorEvent accEvent) {
+        public void setAcc(MySensorEvent accEvent) {
+            this.prefaccEvent=this.accEvent;
             this.accEvent = accEvent;
         }
 
@@ -382,14 +398,36 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
             xgf = ((1-k)*gyrEvent.values[0])+(k*accEvent.values[0]);
             ygf = ((1-k)*gyrEvent.values[1])+(k*accEvent.values[1]);
             zgf = ((1-k)*gyrEvent.values[2])+(k*accEvent.values[2]);
+            if(prefaccEvent!=null){
+                long dt = accEvent.timestamp - prefaccEvent.timestamp;//миллисекунды
+                vx= (float) ((accEvent.values[0]+prefaccEvent.values[0])/2.0* dt)/1000;
+               // vx= (float) ((accEvent.values[0]+prefaccEvent.values[0])/2.0)*(accEvent.timestamp);
+                vy= (float) ((accEvent.values[1]+prefaccEvent.values[1])/2.0* dt)/1000;
+                vz= (float) ((accEvent.values[2]+prefaccEvent.values[2])/2.0* dt)/1000;
+                vxfit= (float) ((xaf+pxaf)/2.0* dt)/1000;
+                vyfit= (float) ((yaf+pyaf)/2.0* dt)/1000;
+                vzfit= (float) ((zaf+pzaf)/2.0* dt)/1000;
+                Sx=(float)(dt*vxfit)/1000;
+                Sy=(float)(dt*vyfit)/1000;
+                Sz=(float)(dt*vzfit)/1000;
+                }
+            pxaf=xaf;
+            pyaf=yaf;
+            pzaf=zaf;
+            return String.format("%d; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f;%f; %f; %f;\n",
+                    //gyrEvent.timestamp,
+                    date,
+                    accEvent.values[0], accEvent.values[1], accEvent.values[2], xaf,yaf,zaf,
+                    gyrEvent.values[0], gyrEvent.values[1], gyrEvent.values[2], xgf, ygf, zgf,
+                    vx,vy,vz, vxfit, vyfit, vzfit, Sx, Sy, Sz);
 
-            return String.format("%d; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f;\n",
-
-                   // System.currentTimeMillis() - SystemClock.elapsedRealtime()* 1000000+gyrEvent.timestamp,
-                          //  + gyrEvent.timestamp,
-                   date,
-                    accEvent.values[0], accEvent.values[1], accEvent.values[2], xaf, yaf, zaf,
-                    gyrEvent.values[0], gyrEvent.values[1], gyrEvent.values[2], xgf, ygf, zgf, v);
+//            return String.format("%d; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f;\n",
+//
+//                   // System.currentTimeMillis() - SystemClock.elapsedRealtime()* 1000000+gyrEvent.timestamp,
+//                          //  + gyrEvent.timestamp,
+//                   date,
+//                    accEvent.values[0], accEvent.values[1], accEvent.values[2], xaf, yaf, zaf,
+//                    gyrEvent.values[0], gyrEvent.values[1], gyrEvent.values[2], xgf, ygf, zgf, v);
         }
     }
     @Override

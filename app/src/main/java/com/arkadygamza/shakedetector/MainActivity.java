@@ -9,6 +9,9 @@ import android.hardware.SensorManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Editable;
+import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -46,16 +49,45 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     Button button;
     SensorPlotter sensorPlotter;
     private int VIEWPORT_SECONDS=8;
-   // TextView linX; TextView linY; TextView linZ;
+    private SensorEventObservableFactory factory;
+
+    // TextView linX; TextView linY; TextView linZ;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        if (savedInstanceState == null || !savedInstanceState.containsKey("VIEWPORT_SECONDS")) {VIEWPORT_SECONDS=10;
-        } else {
-           VIEWPORT_SECONDS = (int) savedInstanceState.getSerializable("VIEWPORT_SECONDS");
-        }
+        EditText editText=(EditText) findViewById(R.id.shag_des);
+        editText.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+                String text = editText.getText().toString();
+               try {
+                   int period = Integer.parseInt(text) ;
+                   if(MainActivity.this.factory!=null){
+                       MainActivity.this.factory.updateperiod(period);
+                   }
+               }
+               catch (Exception e){
+                   Log.e("Error", e.getMessage());
+               }
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+//        if (savedInstanceState == null || !savedInstanceState.containsKey("VIEWPORT_SECONDS")) {VIEWPORT_SECONDS=10;
+//        } else {
+//           VIEWPORT_SECONDS = (int) savedInstanceState.getSerializable("VIEWPORT_SECONDS");
+//        }
 
         increaseValue = new HashMap<>();
         increaseValue.put("X", 0.0);
@@ -235,7 +267,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         SensorManager sensorManager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
         List<Sensor> linearAccSensors = sensorManager.getSensorList(Sensor.TYPE_ACCELEROMETER);
-        sensorPlotter=(new SensorPlotter("LIN",  graphView, SensorEventObservableFactory.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue, VIEWPORT_SECONDS));
+        factory=new SensorEventObservableFactory();
+        sensorPlotter=(new SensorPlotter("LIN",  graphView, factory.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue, VIEWPORT_SECONDS));
       //  sensorPlotter=(new SensorPlotter("LIN",  graphView, SensorEventObservableFactory.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue));
         mPlotters.add(sensorPlotter);
     }

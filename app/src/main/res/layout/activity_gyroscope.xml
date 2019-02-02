@@ -29,7 +29,7 @@
 
 
         <EditText
-            android:id="@+id/value_shag"
+            android:id="@+id/value_shag_gir"
             android:layout_width="109dp"
             android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
@@ -38,7 +38,7 @@
             android:inputType="numberDecimal" />
 
         <Button
-            android:id="@+id/shag"
+            android:id="@+id/shag1"
             android:layout_width="120dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"

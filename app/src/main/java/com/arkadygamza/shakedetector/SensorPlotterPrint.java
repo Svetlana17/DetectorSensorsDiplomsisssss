@@ -40,7 +40,7 @@ public class SensorPlotterPrint {
     private Map<String,Double> incValue;
     private AccelerGyrosActivity activity;
    // private MainActivity activityMain;
-
+   private float xx, yy, zz;
     public SensorPlotterPrint(@NonNull String name, @NonNull  GraphView graphView,
                               @NonNull Observable<SensorEvent> sensorEventObservable, String state, Map<String,Double> incValue,
                               AccelerGyrosActivity view
@@ -48,7 +48,7 @@ public class SensorPlotterPrint {
                               )
 
     {
-        this.VIEWPORT_SECONDS=5;
+        this.VIEWPORT_SECONDS=20;
         this.incValue = incValue;
         this.state = state;
         mName = name;
@@ -179,11 +179,11 @@ public class SensorPlotterPrint {
 //                break;
             case "X":
                 appendData(mSeriesXs, event.values[0]);
-                // appendData(mSeriesXf, average(incValue.get("X")));
+               //xx =xx+altha*(x-xx);
 
                 appendData(mSeriesXf, incValue.get("X")+(1-incValue.get("X"))*event.values[0]);
 
-                // appendData(mSeriesXf, incValue.get("X")+incValue.get("Y"));
+                appendData(mSeriesXf, xx+incValue.get("X")+(event.values[0]-xx));
                 break;
             case "XG":
                 appendData(mSeriesXs, event.values[0]);
@@ -194,7 +194,7 @@ public class SensorPlotterPrint {
                 appendData(mSeriesYs, event.values[1]);
                 // appendData(mSeriesYf, event.values[1] + incValue.get("Y"));
                 //  appendData(mSeriesXf, incValue.get("X")+(1-incValue.get("X"))*event.values[0]);
-                appendData(mSeriesYf, incValue.get("Y")+(1-incValue.get("Y"))*event.values[1]);
+                appendData(mSeriesYf, yy+incValue.get("Y")+(event.values[1]-yy));
                 break;
             case "YG":
                 appendData(mSeriesYs, event.values[1]);
@@ -205,7 +205,7 @@ public class SensorPlotterPrint {
             case "Z":
                 appendData(mSeriesZs, event.values[2]);
                 // appendData(mSeriesZf, event.values[2] + incValue.get("Z"));
-                appendData(mSeriesZf, incValue.get("Z")+(1-incValue.get("Z"))*event.values[2]);
+                appendData(mSeriesZf, zz+incValue.get("Z")+(event.values[2]-zz));
 
                 break;
             case "ZG":

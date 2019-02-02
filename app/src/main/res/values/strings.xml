@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">ShakeDetector</string>
+    <string name="app_name">Приложение</string>
     <string name="Shag">Укажите шаг дискретизации</string>
     <string name="tilte_app">Автоматизированная система определения местоположения мобильного объекта</string>
 </resources>

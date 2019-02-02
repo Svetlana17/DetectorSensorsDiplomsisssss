@@ -5,6 +5,7 @@ import android.graphics.DashPathEffect;
 import android.graphics.Paint;
 import android.hardware.SensorEvent;
 import android.support.annotation.NonNull;
+import android.util.Log;
 import android.widget.SeekBar;
 
 import com.jjoe64.graphview.GraphView;
@@ -23,7 +24,7 @@ import rx.Subscription;
 public class SensorPlotter {
     public static final int MAX_DATA_POINTS = 50;
     private int VIEWPORT_SECONDS;
-    public static final int FPS = 10;
+    public static final int FPS = 20;
 
     @NonNull
     private final String mName;
@@ -163,10 +164,12 @@ public class SensorPlotter {
         if (!canUpdateUi()) {
             return;
         }
+        Log.i("SensorEvent", " Read all");
         switch (state) {
             case "X":
                 appendData(mSeriesXs, event.values[0]);
                 appendData(mSeriesXf, xx+incValue.get("X")*(event.values[0]-xx));
+                // xx =xx+altha*(x-xx);
                 break;
             case "XG":
                 appendData(mSeriesXs, event.values[0]);

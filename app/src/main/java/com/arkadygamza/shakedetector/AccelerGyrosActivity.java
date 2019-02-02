@@ -71,7 +71,9 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
     final String TAG = "SensorLog";
     FileWriter writer;
     Button shareButton;
-    private SensorData data = new SensorData();
+    private SensorData data;
+
+    //= new SensorData();
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -119,7 +121,7 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
                 Log.d(TAG, "Writing to " + getStorageDir());
                 try {
                     writer = new FileWriter(file);
-                    writer.write("TIME;ACC X;ACC Y;ACC Z;ACC XF;ACC YF;ACC ZF;GYR X; GYR Y; GYR Z; GYR XF; GYR YF; GYR ZF;\n");
+                    writer.write("TIME;ACC X;ACC Y;ACC Z;ACC XF;ACC YF;ACC ZF;GYR X; GYR Y; GYR Z; GYR XF; GYR YF; GYR ZF;  VX; VY; VZ; VxFiltr;  VyFiltr; VzFiltr\n");
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
@@ -307,8 +309,10 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
         graphViewAcc.setTitle("Акселерометр");
         GraphView graphViewGir=(GraphView) findViewById(R.id.graph_gyroscope_both);
         graphViewGir.setTitle("Гироскоп");
-        mPlotters.add(new SensorPlotterPrint("LIN", graphViewAcc, SensorEventObservableFactory.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue, this,VIEWPORT_SECONDS));
-        mPlotters.add(new SensorPlotterPrint("GER", graphViewGir, SensorEventObservableFactory.createSensorEventObservable(gyroscopeAccSensors.get(0), sensorManager), state, increaseValue, this, VIEWPORT_SECONDS));
+        SensorEventObservableFactory factory1=new SensorEventObservableFactory();
+        SensorEventObservableFactory factory2=new SensorEventObservableFactory();
+        mPlotters.add(new SensorPlotterPrint("LIN", graphViewAcc, factory1.createSensorEventObservable(linearAccSensors.get(0), sensorManager), state, increaseValue, this,VIEWPORT_SECONDS));
+        mPlotters.add(new SensorPlotterPrint("GER", graphViewGir, factory2.createSensorEventObservable(gyroscopeAccSensors.get(0), sensorManager), state, increaseValue, this, VIEWPORT_SECONDS));
     }
     @Override
     protected void onResume() {
@@ -386,16 +390,15 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
                         data.setGyr(evt);
                         if(data.isAccDataExists()){
                             writer.write(data.getStringData());
-                            data.clear();
+                           // data.clear();
                         }
 
                         break;
                     case Sensor.TYPE_ACCELEROMETER:
-
                         data.setAcc(evt);
                         if(data.isGyrDataExists()){
                             writer.write(data.getStringData());
-                            data.clear();
+                           // data.clear();
                         }
                         break;
                 }
@@ -458,10 +461,15 @@ public class AccelerGyrosActivity extends AppCompatActivity implements  SensorEv
 class SensorData {
     private SensorEvent gyrEvent;
     private SensorEvent accEvent;
+  //  private SensorEvent prefgyrEvent;
+    private SensorEvent prefaccEvent;
     private float xaf, yaf, zaf;
     private float xgf, ygf, zgf;
+    private float vxfit, vyfit, vzfit;
     private float alpha = 0.05f;
     private float k = 0.5f;
+    float vx,vy,vz;
+    float pxaf, pyaf, pzaf;
     public void setParams(float alpha, float k){
         this.alpha = alpha;
         this.k = k;
@@ -470,6 +478,7 @@ class SensorData {
         this.gyrEvent = gyrEvent;
     }
     public void setAcc(SensorEvent accEvent){
+        this.prefaccEvent=accEvent;
         this.accEvent = accEvent;
     }
     public boolean isAccDataExists(){
@@ -482,6 +491,14 @@ class SensorData {
         gyrEvent = null;
         accEvent = null;
     }
+
+    public float[] getIntegration(float[] ax, float dT){
+        float[] result=new float[ax.length-1];
+        for (int i = 0; i < ax.length-1; i++) {
+            result[i]=(ax[i]+ax[i+1])/2*dT;
+        }
+        return  result;
+    }
     public String getStringData(){
         xaf=xaf+alpha*(accEvent.values[0]-xaf);
         yaf=yaf+alpha*(accEvent.values[1]-yaf);
@@ -492,9 +509,21 @@ class SensorData {
         xgf = (1-k)*gyrEvent.values[0]+k*accEvent.values[0];
         ygf = (1-k)*gyrEvent.values[1]+k*accEvent.values[1];
         zgf = (1-k)*gyrEvent.values[2]+k*accEvent.values[2];
-        return String.format("%d; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f;\n", gyrEvent.timestamp,
+        if(prefaccEvent!=null){
+            vx=(accEvent.values[0]+prefaccEvent.values[0])/2*(accEvent.timestamp-prefaccEvent.timestamp);
+            vy=(accEvent.values[1]+prefaccEvent.values[1])/2*(accEvent.timestamp-prefaccEvent.timestamp);
+            vz=(accEvent.values[2]+prefaccEvent.values[2])/2*(accEvent.timestamp-prefaccEvent.timestamp);
+            vxfit=(xaf+pxaf)/2*(accEvent.timestamp-prefaccEvent.timestamp);
+            vyfit=(yaf+pyaf)/2*(accEvent.timestamp-prefaccEvent.timestamp);
+            vzfit=(zaf+pzaf)/2*(accEvent.timestamp-prefaccEvent.timestamp)
+            ;}
+          pxaf=xaf;
+          pyaf=yaf;
+          pzaf=zaf;
+        return String.format("%d; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f;\n", gyrEvent.timestamp,
                 accEvent.values[0], accEvent.values[1], accEvent.values[2], xaf,yaf,zaf,
-                gyrEvent.values[0], gyrEvent.values[1], gyrEvent.values[2], xgf, ygf, zgf);
+                gyrEvent.values[0], gyrEvent.values[1], gyrEvent.values[2], xgf, ygf, zgf,
+                vx,vy,vz, vxfit, vyfit, vzfit);
     }
 }
 

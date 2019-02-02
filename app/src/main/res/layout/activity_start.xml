@@ -7,7 +7,7 @@
     tools:context=".StartActivity"
     android:background="@color/v" >
 
-    <include layout="@layout/toolbar" />
+
 
     <TextView
         android:id="@+id/textView"
