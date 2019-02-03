@@ -399,17 +399,36 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
             ygf = ((1-k)*gyrEvent.values[1])+(k*accEvent.values[1]);
             zgf = ((1-k)*gyrEvent.values[2])+(k*accEvent.values[2]);
             if(prefaccEvent!=null){
-                long dt = accEvent.timestamp - prefaccEvent.timestamp;//миллисекунды
-                vx= (float) ((accEvent.values[0]+prefaccEvent.values[0])/2.0* dt)/1000;
-               // vx= (float) ((accEvent.values[0]+prefaccEvent.values[0])/2.0)*(accEvent.timestamp);
-                vy= (float) ((accEvent.values[1]+prefaccEvent.values[1])/2.0* dt)/1000;
-                vz= (float) ((accEvent.values[2]+prefaccEvent.values[2])/2.0* dt)/1000;
-                vxfit= (float) ((xaf+pxaf)/2.0* dt)/1000;
-                vyfit= (float) ((yaf+pyaf)/2.0* dt)/1000;
-                vzfit= (float) ((zaf+pzaf)/2.0* dt)/1000;
-                Sx=(float)(dt*vxfit)/1000;
-                Sy=(float)(dt*vyfit)/1000;
-                Sz=(float)(dt*vzfit)/1000;
+                //long dt = accEvent.timestamp - prefaccEvent.timestamp;//миллисекунды
+//                vx= (float) ((accEvent.values[0]+prefaccEvent.values[0])/2.0* dt)/1000;
+//
+//                vy= (float) ((accEvent.values[1]+prefaccEvent.values[1])/2.0* dt)/1000;
+//                vz= (float) ((accEvent.values[2]+prefaccEvent.values[2])/2.0* dt)/1000;
+//                vxfit= (float) ((xaf+pxaf)/2.0* dt)/1000;
+//                vyfit= (float) ((yaf+pyaf)/2.0* dt)/1000;
+//                vzfit= (float) ((zaf+pzaf)/2.0* dt)/1000;
+//                Sx=(float)(dt*vxfit)/1000;
+//                Sy=(float)(dt*vyfit)/1000;
+//                Sz=(float)(dt*vzfit)/1000;
+
+
+
+
+                ////////////////исправила
+                vx= (float) ((accEvent.values[0]+prefaccEvent.values[0])/2.0*v)/100;
+                vy= (float) ((accEvent.values[1]+prefaccEvent.values[1])/2.0* v)/100;
+                vz= (float) ((accEvent.values[2]+prefaccEvent.values[2])/2.0* v)/100;
+                vxfit= (float) ((xaf+pxaf)/2.0* v)/100;
+                vyfit= (float) ((yaf+pyaf)/2.0* v)/100;
+                vzfit= (float) ((zaf+pzaf)/2.0* v)/100;
+                Sx=(float)(v*vxfit)/100;
+                Sy=(float)(v*vyfit)/100;
+                Sz=(float)(v*vzfit)/100;
+
+
+
+
+
                 }
             pxaf=xaf;
             pyaf=yaf;
