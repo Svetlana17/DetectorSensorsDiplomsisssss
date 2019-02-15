@@ -16,10 +16,11 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="64dp"
-        android:enabled="true"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="138dp"
+        android:layout_marginEnd="8dp"
         android:background="@color/a"
+        android:enabled="true"
         android:text="Начать запись" />
 
     <Button
@@ -28,20 +29,22 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/buttonStart"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="128dp"
+        android:layout_marginStart="-18dp"
+        android:layout_marginTop="26dp"
+        android:background="@color/a"
         android:enabled="false"
-        android:text="Стоп"
-        android:background="@color/a"/>
+        android:text="Стоп" />
 
     <Button
         android:id="@+id/buttonShare"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/buttonStop"
         android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="150dp"
-        android:enabled="true"
+        android:layout_marginStart="-18dp"
+        android:layout_marginTop="270dp"
         android:background="@color/a"
+        android:enabled="true"
         android:text="Отправить" />
 
     <EditText
@@ -93,16 +96,22 @@
         android:inputType="number|numberDecimal" />
 
     <TextView
-        android:id="@+id/textView2"
+        android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/textView2"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="20dp"
-        android:text="Параметры системы"
-        android:textColor="@color/red"
-        android:textSize="20sp"
-        tools:textColor="colors/red" />
+        android:layout_marginStart="21dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView3"
+        android:layout_alignStart="@+id/textView2"
+        android:layout_marginTop="25dp"
+        android:text="TextView" />
+
 
 </RelativeLayout>

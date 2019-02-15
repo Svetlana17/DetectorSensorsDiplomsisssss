@@ -58,13 +58,22 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
     float vx,vy,vz;
     float pxaf, pyaf, pzaf;
     float Sx, Sy, Sz;
+    float Sxr, Syr, Szr;
     int descritazation;
+    TextView textX, textY, textZ;
+    TextView tv_accX, tv_accY, tv_accZ;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_record);
+       // textX = (TextView) findViewById(R.id.textX);
+//        textY = (TextView) findViewById(R.id.textY);
+//        textZ = (TextView) findViewById(R.id.textZ);
+//        tv_accX = (TextView) findViewById(R.id.accX);
+//        tv_accY = (TextView)findViewById(R.id.accY);
+//        tv_accZ = (TextView) findViewById(R.id.accZ);
         editTextShag=(EditText)findViewById(R.id.editShag);
         editTextShag.addTextChangedListener(new TextWatcher() {
             @Override
@@ -121,7 +130,7 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
 
                     //writer.write("TIME;ACC X;ACC Y;ACC Z;ACC XF;ACC YF;ACC ZF;GYR X; GYR Y; GYR Z; GYR XF; GYR YF; GYR ZF;\n");
                     //    writer.write("TIME;ACC X;ACC Y;ACC Z;ACC XF;ACC YF;ACC ZF;GYR X; GYR Y; GYR Z; GYR XF; GYR YF; GYR ZF;  VX);
-                    writer.write("TIME;ACC X;ACC Y;ACC Z;ACC XF;ACC YF;ACC ZF;GYR X; GYR Y; GYR Z; GYR XF; GYR YF; GYR ZF;  VX; VY; VZ; VxFiltr;  VyFiltr; VzFiltr; Sx; Sy; Sz\n");
+                    writer.write("TIME;ACC X;ACC Y;ACC Z;ACC XF;ACC YF;ACC ZF;GYR X; GYR Y; GYR Z; GYR XF; GYR YF; GYR ZF;  VX; VY; VZ; VxFiltr;  VyFiltr; VzFiltr; Sx; Sy; Sz; SxR; SyR; SzR\n");
 
                 } catch (IOException e) {
                     e.printStackTrace();
@@ -214,11 +223,23 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
                 case Sensor.TYPE_ACCELEROMETER:
                     for (int i = 0; i < 3; i++) {
                         valuesAccel[i] = event.values[i];
+                        float x = event.values[0];
+                        float y = event.values[1];
+                        float z = event.values[2];
+                        textX.setText("X : " + x + " rad/s");
+                        textY.setText("Y : " + y + " rad/s");
+                        textZ.setText("Z : " + z + " rad/s");
                     }
                     break;
                 case Sensor.TYPE_GYROSCOPE:
                     for (int i = 0; i < 3; i++) {
                         valuesGiroscope[i] = event.values[i];
+                        float x = event.values[0];
+                        float y = event.values[1];
+                        float z = event.values[2];
+                        tv_accX.setText("X Acc : " + x + " m/s2");
+                        tv_accY.setText("Y Acc: " + y + " m/s2");
+                        tv_accZ.setText("Z Acc: " + z + " m/s2");
                     }
                     break;
             }
@@ -337,6 +358,8 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
             this.gyrEvent = gyrEvent;
         }
         public void setAcc(MySensorEvent accEvent) {
+           // this.prefaccEvent=this.accEvent;
+           /// this.accEvent = accEvent;
             this.prefaccEvent=this.accEvent;
             this.accEvent = accEvent;
         }
@@ -368,24 +391,30 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
                 Sx=(float)(sec*vxfit);
                 Sy=(float)(sec*vyfit);
                 Sz=(float)(sec*vzfit);
+                Sxr=(sec*vx);
+                Syr=(sec*vy);
+                Szr=(sec*vz);
             }
             pxaf=xaf;
             pyaf=yaf;
             pzaf=zaf;
-            return String.format("%d; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f;%f; %f; %f;\n",
+            return String.format("%d; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f;%f; %f; %f; %f; %f; %f;\n",
                     //gyrEvent.timestamp,
                     date,
                     accEvent.values[0], accEvent.values[1], accEvent.values[2], xaf,yaf,zaf,
                     gyrEvent.values[0], gyrEvent.values[1], gyrEvent.values[2], xgf, ygf, zgf,
-                    vx,vy,vz, vxfit, vyfit, vzfit, Sx, Sy, Sz);
+                    vx,vy,vz, vxfit, vyfit, vzfit, Sxr, Syr, Szr, Sx, Sy, Sz);
         }
     }
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -412,4 +441,6 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
                 return true;
         }
     }
+
+
 }
