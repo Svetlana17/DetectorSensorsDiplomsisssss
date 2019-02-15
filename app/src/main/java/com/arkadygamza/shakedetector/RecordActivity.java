@@ -9,6 +9,7 @@ import android.hardware.SensorEventListener;
 import android.hardware.SensorEventListener2;
 import android.hardware.SensorManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Editable;
@@ -52,11 +53,12 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
     TextView tvText;
     public String state = "DEFAULTG";
     EditText editTextShag;
-    int v;
+
     long t;
     float vx,vy,vz;
     float pxaf, pyaf, pzaf;
     float Sx, Sy, Sz;
+    int descritazation;
     @SuppressLint("ClickableViewAccessibility")
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,23 +69,22 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
         editTextShag.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
-
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
             }
-
             @Override
             public void afterTextChanged(Editable editable) {
-            v=Integer.parseInt(editable.toString());
+
+                if(editable.length()>0) {
+                    int gers = Integer.parseInt(editable.toString());
+                    descritazation = (int) (1.0 / gers * 1000);
+                    System.out.println(descritazation);
+                }
             }
         });
         shareButton = (Button) findViewById(R.id.buttonShare);
         shareButton.setOnClickListener(new View.OnClickListener() {
-
-
                                            @Override
                                            public void onClick(View v) {
                                                share();
@@ -91,24 +92,19 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
                                        }
         );
         isRunning = false;
-        //   tvText = (TextView) findViewById(R.id.tvText);
         manager = (SensorManager) getSystemService(Context.SENSOR_SERVICE);
-
         buttonStart = (Button) findViewById(R.id.buttonStart);
         buttonStop = (Button) findViewById(R.id.buttonStop);
         editAlpha = (EditText) findViewById(R.id.editAlpha);
         editK = (EditText) findViewById(R.id.editK);
-
         buttonStart.setOnTouchListener(new View.OnTouchListener() {
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 buttonStart.setEnabled(false);
                 buttonStop.setEnabled(true);
-
                 try {
                     float alpha = Float.parseFloat(editAlpha.getText().toString());
                     float k = Float.parseFloat(editK.getText().toString());
-
                     data = new SensorData();
                     data.setParams(alpha, k);
                 } catch (NumberFormatException e) {
@@ -124,17 +120,16 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
                     writer = new FileWriter(file);
 
                     //writer.write("TIME;ACC X;ACC Y;ACC Z;ACC XF;ACC YF;ACC ZF;GYR X; GYR Y; GYR Z; GYR XF; GYR YF; GYR ZF;\n");
-                //    writer.write("TIME;ACC X;ACC Y;ACC Z;ACC XF;ACC YF;ACC ZF;GYR X; GYR Y; GYR Z; GYR XF; GYR YF; GYR ZF;  VX);
+                    //    writer.write("TIME;ACC X;ACC Y;ACC Z;ACC XF;ACC YF;ACC ZF;GYR X; GYR Y; GYR Z; GYR XF; GYR YF; GYR ZF;  VX);
                     writer.write("TIME;ACC X;ACC Y;ACC Z;ACC XF;ACC YF;ACC ZF;GYR X; GYR Y; GYR Z; GYR XF; GYR YF; GYR ZF;  VX; VY; VZ; VxFiltr;  VyFiltr; VzFiltr; Sx; Sy; Sz\n");
 
                 } catch (IOException e) {
                     e.printStackTrace();
                 }
 
-                manager.registerListener(RecordActivity.this, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), v*1000);//было
-                manager.registerListener(RecordActivity.this, manager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), v*1000);///было
-// manager.registerListener(RecordActivity.this, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER), v);//выносить
-//                manager.registerListener(RecordActivity.this, manager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), v);///
+                manager.registerListener(RecordActivity.this, manager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER),  descritazation);//было
+                manager.registerListener(RecordActivity.this, manager.getDefaultSensor(Sensor.TYPE_GYROSCOPE), descritazation);///было
+
 
                 isRunning = true;
                 return true;
@@ -142,6 +137,7 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
         });
 
         buttonStop.setOnTouchListener(new View.OnTouchListener() {
+          //  @RequiresApi(api = Build.VERSION_CODES.KITKAT)
             @Override
             public boolean onTouch(View view, MotionEvent motionEvent) {
                 buttonStart.setEnabled(true);
@@ -191,13 +187,8 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
     @Override
     protected void onResume() {
         super.onResume();
-//        manager.registerListener(listener, sensorAccel,
-//                SensorManager.SENSOR_DELAY_NORMAL);
-//        manager.registerListener(listener, sensorGiros,
-//                SensorManager.SENSOR_DELAY_NORMAL);
-        manager.registerListener(listener, sensorAccel, 60000000);
-        manager.registerListener(listener, sensorGiros, 60000000);
-
+        // manager.registerListener(listener, sensorAccel, (descritazation));
+        // manager.registerListener(listener, sensorGiros, (descritazation));
 
         timer = new Timer();
         TimerTask task = new TimerTask() {
@@ -211,16 +202,11 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
                 });
             }
         };
-
         timer.schedule(task, 0, 400);
     }
-
     float[] valuesAccel = new float[3];
     float[] valuesGiroscope = new float[3];
-
-
     SensorEventListener listener = new SensorEventListener() {
-
         @Override
         public void onSensorChanged(SensorEvent hardEvent) {
             MySensorEvent event = new MySensorEvent(hardEvent);
@@ -235,18 +221,16 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
                         valuesGiroscope[i] = event.values[i];
                     }
                     break;
-
             }
 
         }
-
         @Override
         public void onAccuracyChanged(Sensor sensor, int i) {
-
         }
 
     };
-
+    long lastgiroscopeEventDate=0;
+    long lastacselerometrEventDate=0;
     @Override
     public void onSensorChanged(SensorEvent event) {
         MySensorEvent evt=new MySensorEvent(event);
@@ -259,29 +243,23 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
             try {
                 switch (evt.sensor.getType()) {
                     case Sensor.TYPE_GYROSCOPE:
-                        //evt.timestamp=date;
-
-                       // Calendar cal = Calendar.getInstance();
-                       // cal.setTimeInMillis( System.currentTimeMillis() / 1000000L);
-                       // String date = DateFormat.format("dd-MM-yyyy hh:mm:ss", cal).toString();
-
-//                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
-//                        String date = sdf.format(new Date());
-//
+                        if(date-lastgiroscopeEventDate<=descritazation)
+                            return;
+                        lastgiroscopeEventDate=date;
                         data.setGyr(evt);
                         if (data.isAccDataExists()) {
-                            writer.write(data.getStringData(s));
-
-                            //data.clear();
+                            //  writer.write(data.getStringData(s, (int) descritazation));
                         }
 
                         break;
                     case Sensor.TYPE_ACCELEROMETER:
-                  //    evt.timestamp=date;
+                        if(date-lastacselerometrEventDate<=descritazation)
+                            return;
+                        lastacselerometrEventDate=date;
                         data.setAcc(evt);
                         if (data.isGyrDataExists()) {
-                            writer.write(data.getStringData(s));
-                           // data.clear();
+                            writer.write(data.getStringData(s, descritazation));
+                            System.out.println("acselerometr =" );
                         }
                         break;
                 }
@@ -289,9 +267,7 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
                 e.printStackTrace();
             }
         }
-
     }
-
     private void share() {
         File dir = getExternalFilesDir(null);
         File zipFile = new File(dir, "accel.zip");
@@ -311,7 +287,6 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
             Toast.makeText(getApplicationContext(), "Can't send file!", Toast.LENGTH_LONG).show();
         }
     }
-
     private static void zipFile(ZipOutputStream zos, File file) throws IOException {
         zos.putNextEntry(new ZipEntry(file.getName()));
         FileInputStream fis = new FileInputStream(file);
@@ -326,7 +301,6 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
         }
         zos.closeEntry();
     }
-
     private static void safeClose(FileInputStream fis) {
         try {
             fis.close();
@@ -334,102 +308,67 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
             e.printStackTrace();
         }
     }
-
     private void sendBundleInfo(File file) {
         Intent emailIntent = new Intent(Intent.ACTION_SEND);
         emailIntent.setType("message/rfc822");
         emailIntent.putExtra(Intent.EXTRA_STREAM, Uri.parse("file://" + file));
         startActivity(Intent.createChooser(emailIntent, "Send data"));
     }
-
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
-
     }
-//}
 
     class SensorData {
-
         private MySensorEvent gyrEvent;
         private MySensorEvent accEvent;
-
         private float xaf, yaf, zaf;
         private float xgf, ygf, zgf;
         private float alpha = 0.05f;
         private float k = 0.5f;
+
         float vx,vy,vz;
         float pxaf, pyaf, pzaf;
         private MySensorEvent prefaccEvent;
         private float vxfit, vyfit, vzfit;
         public void setParams(float alpha, float k) {
             this.alpha = alpha;
-            this.k = k;
-        }
-
+            this.k = k; }
         public void setGyr(MySensorEvent gyrEvent) {
             this.gyrEvent = gyrEvent;
         }
-
         public void setAcc(MySensorEvent accEvent) {
             this.prefaccEvent=this.accEvent;
             this.accEvent = accEvent;
         }
-
         public boolean isAccDataExists() {
             return accEvent != null;
         }
-
         public boolean isGyrDataExists() {
             return gyrEvent != null;
         }
-
         public void clear() {
             gyrEvent = null;
             accEvent = null;
         }
-
-        public String getStringData(long date) {
+        public String getStringData(long date, int descritazation) {
             xaf = xaf + alpha * (accEvent.values[0] - xaf);
             yaf = yaf + alpha * (accEvent.values[1] - yaf);
             zaf = zaf + alpha * (accEvent.values[2] - zaf);
-//            xgf = (1 - k) * gyrEvent.values[0];
-//            ygf = (1 - k )* gyrEvent.values[1];
-//            zgf = (1 - k) * gyrEvent.values[2];
             xgf = ((1-k)*gyrEvent.values[0])+(k*accEvent.values[0]);
             ygf = ((1-k)*gyrEvent.values[1])+(k*accEvent.values[1]);
             zgf = ((1-k)*gyrEvent.values[2])+(k*accEvent.values[2]);
+            float sec= (float) (descritazation*1.0/1000.0);
             if(prefaccEvent!=null){
-                //long dt = accEvent.timestamp - prefaccEvent.timestamp;//миллисекунды
-//                vx= (float) ((accEvent.values[0]+prefaccEvent.values[0])/2.0* dt)/1000;
-//
-//                vy= (float) ((accEvent.values[1]+prefaccEvent.values[1])/2.0* dt)/1000;
-//                vz= (float) ((accEvent.values[2]+prefaccEvent.values[2])/2.0* dt)/1000;
-//                vxfit= (float) ((xaf+pxaf)/2.0* dt)/1000;
-//                vyfit= (float) ((yaf+pyaf)/2.0* dt)/1000;
-//                vzfit= (float) ((zaf+pzaf)/2.0* dt)/1000;
-//                Sx=(float)(dt*vxfit)/1000;
-//                Sy=(float)(dt*vyfit)/1000;
-//                Sz=(float)(dt*vzfit)/1000;
-
-
-
-
-                ////////////////исправила
-                vx= (float) ((accEvent.values[0]+prefaccEvent.values[0])/2.0*v)/100;
-                vy= (float) ((accEvent.values[1]+prefaccEvent.values[1])/2.0* v)/100;
-                vz= (float) ((accEvent.values[2]+prefaccEvent.values[2])/2.0* v)/100;
-                vxfit= (float) ((xaf+pxaf)/2.0* v)/100;
-                vyfit= (float) ((yaf+pyaf)/2.0* v)/100;
-                vzfit= (float) ((zaf+pzaf)/2.0* v)/100;
-                Sx=(float)(v*vxfit)/100;
-                Sy=(float)(v*vyfit)/100;
-                Sz=(float)(v*vzfit)/100;
-
-
-
-
-
-                }
+                vx= (float) ((accEvent.values[0]+prefaccEvent.values[0])/2.0*sec);
+                vy= (float) ((accEvent.values[1]+prefaccEvent.values[1])/2.0*sec);
+                vz= (float) ((accEvent.values[2]+prefaccEvent.values[2])/2.0*sec);
+                vxfit= (float) ((xaf+pxaf)/2.0* sec);
+                vyfit= (float) ((yaf+pyaf)/2.0* sec);
+                vzfit= (float) ((zaf+pzaf)/2.0* sec);
+                Sx=(float)(sec*vxfit);
+                Sy=(float)(sec*vyfit);
+                Sz=(float)(sec*vzfit);
+            }
             pxaf=xaf;
             pyaf=yaf;
             pzaf=zaf;
@@ -439,22 +378,14 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
                     accEvent.values[0], accEvent.values[1], accEvent.values[2], xaf,yaf,zaf,
                     gyrEvent.values[0], gyrEvent.values[1], gyrEvent.values[2], xgf, ygf, zgf,
                     vx,vy,vz, vxfit, vyfit, vzfit, Sx, Sy, Sz);
-
-//            return String.format("%d; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f; %f;\n",
-//
-//                   // System.currentTimeMillis() - SystemClock.elapsedRealtime()* 1000000+gyrEvent.timestamp,
-//                          //  + gyrEvent.timestamp,
-//                   date,
-//                    accEvent.values[0], accEvent.values[1], accEvent.values[2], xaf, yaf, zaf,
-//                    gyrEvent.values[0], gyrEvent.values[1], gyrEvent.values[2], xgf, ygf, zgf, v);
         }
     }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
@@ -481,6 +412,4 @@ public class RecordActivity extends AppCompatActivity implements SensorEventList
                 return true;
         }
     }
-
-
 }
