@@ -99,9 +99,9 @@
         android:id="@+id/textView3"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/textView2"
-        android:layout_alignParentStart="true"
-        android:layout_marginStart="21dp"
+        android:layout_above="@+id/accX"
+        android:layout_marginBottom="-25dp"
+        android:layout_toEndOf="@+id/accX"
         android:text="TextView" />
 
     <TextView
@@ -109,8 +109,41 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView3"
-        android:layout_alignStart="@+id/textView2"
-        android:layout_marginTop="25dp"
+        android:layout_alignStart="@+id/buttonStart"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="21dp"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView4"
+        android:layout_alignStart="@+id/buttonStart"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView5"
+        android:layout_alignEnd="@+id/textView3"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView6"
+        android:layout_alignEnd="@+id/textView3"
+        android:text="TextView" />
+
+    <TextView
+        android:id="@+id/textView8"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView7"
+        android:layout_alignEnd="@+id/textView3"
         android:text="TextView" />
 
 

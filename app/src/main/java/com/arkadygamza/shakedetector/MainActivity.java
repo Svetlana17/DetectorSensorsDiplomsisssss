@@ -47,6 +47,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     EditText editValue;
     EditText shagValue;
     Button button;
+
     SensorPlotter sensorPlotter;
     private int VIEWPORT_SECONDS=8;
     private SensorEventObservableFactory factory;
