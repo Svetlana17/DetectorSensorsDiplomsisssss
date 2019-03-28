@@ -7,31 +7,22 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme"
-       >
+        android:theme="@style/AppTheme">
+        <activity android:name=".RecordValues.RecordValues"></activity>
         <activity
             android:name=".MainActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".GyroscopeActivity" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+        <activity android:name=".GyroscopeActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".AccelerGyrosActivity" />
-        <activity android:name=".StartActivity">
-
-        </activity>
+        <activity android:name=".StartActivity"></activity>
         <activity android:name=".ActivityView" />
-        <activity android:name=".RecordActivity" >
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
-
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-        <activity android:name=".MovementActivity"></activity>
+        <activity android:name=".MovementActivity" />
     </application>
 
 </manifest>

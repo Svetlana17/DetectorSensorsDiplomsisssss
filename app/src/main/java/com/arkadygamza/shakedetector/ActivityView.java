@@ -15,6 +15,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import com.arkadygamza.shakedetector.RecordValues.RecordValues;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Timer;
@@ -169,7 +171,7 @@ public class ActivityView extends AppCompatActivity  implements  View.OnClickLis
                 return true;
             case R.id.record:
                 state="record";
-                Intent ir=new Intent(ActivityView.this,RecordActivity.class);
+                Intent ir=new Intent(ActivityView.this, RecordValues.class);
                 startActivity(ir);
                 return  true;
             case  R.id.movement:

@@ -24,6 +24,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.arkadygamza.shakedetector.RecordValues.RecordValues;
 import com.jjoe64.graphview.GraphView;
 
 import java.util.ArrayList;
@@ -238,7 +239,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 return true;
             case R.id.record:
                 state="record";
-                Intent is = new Intent(MainActivity.this,RecordActivity.class);
+                Intent is = new Intent(MainActivity.this, RecordValues.class);
                 startActivity(is);
                 return true;
             case R.id.main:

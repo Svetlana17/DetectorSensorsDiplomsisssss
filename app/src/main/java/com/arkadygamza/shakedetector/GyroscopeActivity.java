@@ -22,6 +22,7 @@ import android.widget.SeekBar;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.arkadygamza.shakedetector.RecordValues.RecordValues;
 import com.jjoe64.graphview.GraphView;
 
 import java.util.ArrayList;
@@ -238,7 +239,7 @@ EditText shagValue;
                 return true;
             case R.id.record:
                 state="record";
-                Intent i=new Intent(GyroscopeActivity.this,RecordActivity.class);
+                Intent i=new Intent(GyroscopeActivity.this, RecordValues.class);
                 startActivity(i);
             default:
                 return true;
